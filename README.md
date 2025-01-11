@@ -899,43 +899,11 @@ for (String fruit : fruits) {
 
 Чтобы преобразовать строку в массив символов, используйте метод toCharArray(). Этот метод возвращает новый массив, содержащий символы строки.
 
-Пример:
-```Java
-public class StringToCharArrayExample {
-    public static void main(String[] args) {
-        String str = "Hello, World!";
-        char[] charArray = str.toCharArray();
-
-        // Выводим массив символов
-        System.out.println("Массив символов:");
-        for (char c : charArray) {
-            System.out.print(c + " ");
-        }
-    }
-}
-```
 
 ▎Преобразование массива символов в строку
 
 Чтобы преобразовать массив символов обратно в строку, вы можете использовать конструктор класса String или метод String.valueOf(). 
-
-Пример:
-```Java
-public class CharArrayToStringExample {
-    public static void main(String[] args) {
-        char[] charArray = {'H', 'e', 'l', 'l', 'o'};
-        
-        // Преобразование массива символов в строку
-        String str = String.valueOf(charArray);
-        
-        // Альтернативный способ
-        // String str = new String(charArray);
-
-        System.out.println("Преобразованная строка: " + str);
-    }
-}
-```
-
+---
 ▎Использование методов toCharArray и valueOf
 
 1. Метод toCharArray():
@@ -949,39 +917,6 @@ public class CharArrayToStringExample {
    • Может использоваться для преобразования различных типов данных в строку, включая массивы символов.
 
    • Пример: String str = String.valueOf(chars);
-
-▎Полный пример
-
-Вот полный пример, который демонстрирует оба преобразования:
-```Java
-public class StringAndCharArrayExample {
-    public static void main(String[] args) {
-        // Преобразование строки в массив символов
-        String originalString = "Java Programming";
-        char[] charArray = originalString.toCharArray();
-        
-        System.out.println("Исходная строка: " + originalString);
-        System.out.print("Массив символов: ");
-        for (char c : charArray) {
-            System.out.print(c + " ");
-        }
-        System.out.println();
-
-        // Преобразование массива символов обратно в строку
-        String newString = String.valueOf(charArray);
-        
-        System.out.println("Преобразованная строка: " + newString);
-    }
-}
-```
-
-▎Вывод программы
-
-Исходная строка: Java Programming
-
-Массив символов: J a v a   P r o g r a m m i n g 
-
-Преобразованная строка: Java Programming
 
 
 Таким образом, вы можете легко преобразовывать строки в массивы символов и обратно с помощью методов toCharArray() и String.valueOf().
@@ -1018,6 +953,15 @@ public class StringAndCharArrayExample {
    • StringBuffer рекомендуется использовать в многопоточных средах, где требуется безопасность потоков.
 
 ## 48. Строки в JAVA. Преобразование символов и чисел в строки. Какие методы используются для преобразования чисел, символов и объектов в строки? Примеры работы с методами String.valueOf() и toString().
+- В случае, если вы хотите преобразовать объект в строку, вы можете использовать метод toString(). Если ваш класс не переопределяет этот метод, будет вызван метод по умолчанию, который не всегда предоставляет полезную информацию.
+---
+▎1. Метод String.valueOf()
+
+Метод String.valueOf() является статическим методом класса String, который принимает различные типы данных и возвращает их строковое представление. Он перегружен для работы с различными типами, такими как int, char, boolean, double и т.д.
+
+▎2. Метод toString()
+
+Метод toString() является методом класса Object, и он может быть переопределён в любом классе. Этот метод возвращает строковое представление объекта. По умолчанию он возвращает строку, содержащую имя класса и хэш-код объекта, но его можно переопределить для предоставления более информативного представления.
 
 ## 49. Строки в JAVA. Интернированные строки. Что такое интернированные строки? Как JVM оптимизирует работу с повторяющимися строками? Примеры их использования.
 
