@@ -5764,6 +5764,264 @@ public class KeyBindingsExample {
 ```
 
 ## 101. Обобщённое программирование в Java. Понятие обобщённого программирования и его роль в упрощении создания алгоритмов для работы с различными типами данных. История разваития в JAVA. Примеры проектирования универсальных структур данных и алгоритмов.
+### Обобщённое программирование в Java
+
+**Обобщённое программирование (Generics)** — это механизм, который позволяет создавать классы, интерфейсы и методы, которые могут работать с различными типами данных, не теряя при этом типобезопасности. Это обеспечивает гибкость и повторное использование кода, позволяя разработчикам писать алгоритмы и структуры данных, которые могут работать с любыми типами данных.
+
+### Понятие обобщённого программирования и его роль
+
+1. **Типобезопасность**: Обобщённые классы и методы обеспечивают проверку типов во время компиляции, что помогает избежать ошибок времени выполнения.
+2. **Повторное использование кода**: Обобщённое программирование позволяет создавать универсальные структуры данных и алгоритмы, которые могут работать с любыми типами данных.
+3. **Чистота кода**: Использование обобщений уменьшает необходимость приведения типов, делая код более читаемым и поддерживаемым.
+
+### История развития обобщённого программирования в Java
+
+- **Java 5 (2004 год)**: Введение обобщений в Java. Это было важным шагом для повышения типобезопасности и удобства использования коллекций и других структур данных.
+- **Java 6 и далее**: Улучшение поддержки обобщений, добавление новых возможностей и улучшение производительности.
+- **Java 7 и Java 8**: Дальнейшие улучшения, такие как использование diamond operator (`<>`) для упрощения синтаксиса создания экземпляров обобщённых классов.
+- **Java 9 и выше**: Продолжение улучшений и добавление новых возможностей, таких как модули и улучшенная поддержка типов.
+
+### Примеры проектирования универсальных структур данных и алгоритмов
+
+#### Пример 1: Создание обобщённого класса для списка
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class GenericList<T> {
+    private List<T> items = new ArrayList<>();
+
+    public void add(T item) {
+        items.add(item);
+    }
+
+    public T get(int index) {
+        return items.get(index);
+    }
+
+    public int size() {
+        return items.size();
+    }
+
+    public static void main(String[] args) {
+        GenericList<String> stringList = new GenericList<>();
+        stringList.add("Hello");
+        stringList.add("World");
+
+        System.out.println(stringList.get(0)); // Output: Hello
+        System.out.println(stringList.get(1)); // Output: World
+
+        GenericList<Integer> integerList = new GenericList<>();
+        integerList.add(1);
+        integerList.add(2);
+
+        System.out.println(integerList.get(0)); // Output: 1
+        System.out.println(integerList.get(1)); // Output: 2
+    }
+}
+```
+
+#### Пример 2: Создание обобщённого метода для сортировки
+
+```java
+import java.util.Arrays;
+
+public class GenericSort {
+
+    public static <T extends Comparable<T>> void sortArray(T[] array) {
+        Arrays.sort(array);
+    }
+
+    public static void main(String[] args) {
+        Integer[] intArray = {3, 1, 4, 1, 5};
+        String[] stringArray = {"apple", "banana", "cherry"};
+
+        sortArray(intArray);
+        sortArray(stringArray);
+
+        System.out.println(Arrays.toString(intArray));   // Output: [1, 1, 3, 4, 5]
+        System.out.println(Arrays.toString(stringArray)); // Output: [apple, banana, cherry]
+    }
+}
+```
+
+#### Пример 3: Создание обобщённой структуры данных Pair
+
+```java
+public class Pair<T, U> {
+    private T first;
+    private U second;
+
+    public Pair(T first, U second) {
+        this.first = first;
+        this.second = second;
+    }
+
+    public T getFirst() {
+        return first;
+    }
+
+    public void setFirst(T first) {
+        this.first = first;
+    }
+
+    public U getSecond() {
+        return second;
+    }
+
+    public void setSecond(U second) {
+        this.second = second;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + first + ", " + second + ")";
+    }
+
+    public static void main(String[] args) {
+        Pair<String, Integer> pair1 = new Pair<>("John", 30);
+        Pair<Double, String> pair2 = new Pair<>(3.14, "Pi");
+
+        System.out.println(pair1); // Output: (John, 30)
+        System.out.println(pair2); // Output: (3.14, Pi)
+
+        pair1.setFirst("Alice");
+        pair2.setSecond("Euler's number");
+
+        System.out.println(pair1); // Output: (Alice, 30)
+        System.out.println(pair2); // Output: (3.14, Euler's number)
+    }
+}
+```
+
+#### Пример 4: Создание обобщённого метода для поиска элемента в массиве
+
+```java
+public class GenericSearch {
+
+    public static <T> int findIndex(T[] array, T value) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].equals(value)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        Integer[] intArray = {1, 2, 3, 4, 5};
+        String[] stringArray = {"apple", "banana", "cherry"};
+
+        System.out.println(findIndex(intArray, 3)); // Output: 2
+        System.out.println(findIndex(stringArray, "banana")); // Output: 1
+
+        System.out.println(findIndex(intArray, 6)); // Output: -1
+        System.out.println(findIndex(stringArray, "grape")); // Output: -1
+    }
+}
+```
+
+#### Пример 5: Использование ограничений на типы
+
+```java
+public class BoundedTypeExample {
+
+    public static <T extends Number> double sum(T[] array) {
+        double sum = 0.0;
+        for (T element : array) {
+            sum += element.doubleValue();
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        Integer[] intArray = {1, 2, 3, 4, 5};
+        Double[] doubleArray = {1.1, 2.2, 3.3, 4.4, 5.5};
+
+        System.out.println(sum(intArray)); // Output: 15.0
+        System.out.println(sum(doubleArray)); // Output: 16.5
+    }
+}
+```
+
+### Роль обобщённого программирования в упрощении создания алгоритмов
+
+1. **Универсальность**: Обобщённые классы и методы могут работать с любыми типами данных, что делает их универсальными и применимыми в различных контекстах.
+2. **Типобезопасность**: Компилятор проверяет типы данных во время компиляции, что снижает вероятность ошибок времени выполнения.
+3. **Удобство использования**: С помощью обобщений можно избежать необходимости использовать приведение типов, что делает код более чистым и понятным.
+
+### Примеры проектирования универсальных структур данных и алгоритмов
+
+#### Пример 6: Обобщённая очередь (Queue)
+
+```java
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class GenericQueue<T> {
+    private Queue<T> queue = new LinkedList<>();
+
+    public void enqueue(T item) {
+        queue.add(item);
+    }
+
+    public T dequeue() {
+        return queue.poll();
+    }
+
+    public boolean isEmpty() {
+        return queue.isEmpty();
+    }
+
+    public int size() {
+        return queue.size();
+    }
+
+    public static void main(String[] args) {
+        GenericQueue<String> stringQueue = new GenericQueue<>();
+        stringQueue.enqueue("First");
+        stringQueue.enqueue("Second");
+        stringQueue.enqueue("Third");
+
+        System.out.println(stringQueue.dequeue()); // Output: First
+        System.out.println(stringQueue.size());   // Output: 2
+
+        GenericQueue<Integer> intQueue = new GenericQueue<>();
+        intQueue.enqueue(1);
+        intQueue.enqueue(2);
+        intQueue.enqueue(3);
+
+        System.out.println(intQueue.dequeue()); // Output: 1
+        System.out.println(intQueue.size());   // Output: 2
+    }
+}
+```
+
+#### Пример 7: Обобщённый метод для свопа значений
+
+```java
+public class GenericSwap {
+
+    public static <T> void swap(T[] array, int index1, int index2) {
+        T temp = array[index1];
+        array[index1] = array[index2];
+        array[index2] = temp;
+    }
+
+    public static void main(String[] args) {
+        Integer[] intArray = {1, 2, 3, 4, 5};
+        String[] stringArray = {"a", "b", "c", "d", "e"};
+
+        swap(intArray, 0, 4);
+        swap(stringArray, 1, 3);
+
+        System.out.println(Arrays.toString(intArray));    // Output: [5, 2, 3, 4, 1]
+        System.out.println(Arrays.toString(stringArray)); // Output: [a, d, c, b, e]
+    }
+}
+```
+
 ## 102. Generics в Java. Реализация обобщенного программирования через Generics. Основные синтаксические конструкции: параметры типов, обобщенные классы и методы. Примеры работы с параметризованными классами и методами. Примущества и недостатки Generics.
 ## 103. Коллекции и Generics в Java. Как использование Generics повысило типобезопасность коллекций, таких как ArrayList, HashMap и HashSet? Примеры создания и обработки коллекций с обобщениями.
 ## 104. Параметризованные методы. Понятие параметризованных методов в Java. Как они позволяют работать с любыми типами данных? Примеры реализации методов с обобщенными параметрами и их вызова.
