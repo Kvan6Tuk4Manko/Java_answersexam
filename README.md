@@ -7765,12 +7765,1025 @@ public class TreeMapExample {
 }
 ```
 ## 111. LinkedList в Java. Особенности класса LinkedList как реализации интерфейса List. Преимущества использования. 
+### LinkedList в Java
 
+`LinkedList` — это класс в Java, который реализует интерфейсы `List` и `Deque`, предоставляя функциональность двусвязного списка. В отличие от `ArrayList`, который основан на массиве, `LinkedList` использует узлы, каждый из которых содержит ссылки на следующий и предыдущий элементы списка.
+
+### Особенности класса LinkedList
+
+1. **Двусвязный список**: Каждый элемент (`Node`) в `LinkedList` содержит ссылки на следующий и предыдущий элементы, что позволяет эффективно добавлять и удалять элементы в начале и конце списка, а также в любом другом месте.
+
+2. **Реализация интерфейсов**: 
+   - **List**: Обеспечивает порядок элементов и доступ к ним по индексу.
+   - **Deque**: Дополняет функциональность двусторонней очереди (добавление и удаление элементов с обоих концов списка).
+
+3. **Отсутствие фиксированного размера**: В отличие от массивов и `ArrayList`, `LinkedList` не имеет фиксированного размера и может динамически увеличиваться или уменьшаться.
+
+4. **Производительность**:
+   - **Добавление и удаление элементов**: Быстро выполняются для любых позиций в списке, особенно в начале и конце.
+   - **Доступ к элементам по индексу**: Медленнее, чем в `ArrayList`, так как требует прохода по списку до нужной позиции.
+
+### Преимущества использования LinkedList
+
+1. **Эффективное добавление и удаление элементов**: Операции добавления и удаления элементов в начале и конце списка выполняются за O(1) времени, что делает `LinkedList` подходящим выбором для задач, где часто требуется модификация списка.
+
+2. **Функциональность Deque**: `LinkedList` реализует интерфейс `Deque`, позволяя использовать его как двустороннюю очередь, что удобно для задач, связанных с FIFO и LIFO структурами данных.
+
+3. **Безопасность от ConcurrentModificationException**: В отличие от некоторых других коллекций, `LinkedList` предоставляет методы для безопасного итерирования даже при изменении списка во время итерации (например, через `ListIterator`).
+
+4. **Гибкость**: Возможность эффективно работать с любыми позициями в списке делает `LinkedList` гибким инструментом для различных алгоритмов и структур данных.
+
+### Примеры использования LinkedList
+
+#### Пример 1: Базовые операции с LinkedList
+
+```java
+import java.util.LinkedList;
+import java.util.List;
+
+public class LinkedListExample {
+    public static void main(String[] args) {
+        List<String> linkedList = new LinkedList<>();
+        
+        // Добавление элементов
+        linkedList.add("Alice");
+        linkedList.add("Bob");
+        linkedList.add("Charlie");
+
+        System.out.println("Initial list: " + linkedList);
+
+        // Добавление элемента в начало списка
+        ((LinkedList<String>) linkedList).addFirst("David");
+        System.out.println("After adding David at the beginning: " + linkedList);
+
+        // Добавление элемента в конец списка
+        linkedList.add("Eve");
+        System.out.println("After adding Eve at the end: " + linkedList);
+
+        // Удаление первого элемента
+        String firstElement = ((LinkedList<String>) linkedList).removeFirst();
+        System.out.println("Removed first element: " + firstElement);
+        System.out.println("After removing first element: " + linkedList);
+
+        // Удаление последнего элемента
+        String lastElement = ((LinkedList<String>) linkedList).removeLast();
+        System.out.println("Removed last element: " + lastElement);
+        System.out.println("After removing last element: " + linkedList);
+    }
+}
+```
+
+#### Пример 2: Использование LinkedList как Deque
+
+```java
+import java.util.Deque;
+import java.util.LinkedList;
+
+public class DequeExample {
+    public static void main(String[] args) {
+        Deque<String> deque = new LinkedList<>();
+
+        // Добавление элементов в начало и конец
+        deque.addFirst("Alice");
+        deque.addLast("Bob");
+        deque.addFirst("Charlie");
+        deque.addLast("David");
+
+        System.out.println("Initial deque: " + deque);
+
+        // Чтение и удаление элементов
+        System.out.println("Remove first: " + deque.removeFirst());
+        System.out.println("Remove last: " + deque.removeLast());
+
+        System.out.println("After removals: " + deque);
+
+        // Проверка наличия элемента
+        System.out.println("Contains 'Bob': " + deque.contains("Bob"));
+    }
+}
+```
+
+#### Пример 3: Использование ListIterator для безопасного итерирования
+
+```java
+import java.util.LinkedList;
+import java.util.ListIterator;
+
+public class ListIteratorExample {
+    public static void main(String[] args) {
+        LinkedList<String> linkedList = new LinkedList<>();
+        linkedList.add("Alice");
+        linkedList.add("Bob");
+        linkedList.add("Charlie");
+
+        ListIterator<String> iterator = linkedList.listIterator();
+
+        System.out.println("Original list: " + linkedList);
+
+        // Проход по списку и добавление новых элементов
+        while (iterator.hasNext()) {
+            String current = iterator.next();
+            if (current.equals("Bob")) {
+                iterator.add("Diana");
+            }
+        }
+
+        System.out.println("After adding Diana: " + linkedList);
+
+        // Проход по списку в обратном порядке и удаление элементов
+        while (iterator.hasPrevious()) {
+            String current = iterator.previous();
+            if (current.equals("Diana")) {
+                iterator.remove();
+            }
+        }
+
+        System.out.println("After removing Diana: " + linkedList);
+    }
+}
+```
 ## 112. Коллекции в Java. Понятие коллекций как структур данных для хранения объектов. Основные цели использования коллекций. Роль Iterable в Java Collections Framework. 
-## 113. Коллекции в Java. Реализации List - ArrayList. Особенности функционирования ArrayList. Пример использования ArrayList.
-## 114. Коллекции в Java. Создание Generic Collection в Java. Преимущства данного подхода. Примеры. 
-## 115. Коллекции и Generics. Использование Generics для типобезопасности в коллекциях. Примеры создания типизированных списков и множеств.
-## 116. ArrayList в Java. Понятие ArrayList как реализации интерфейса List. Основные методы (add, get, remove) для работы со списками. Примеры добавления, удаления и доступа к элементам.
-## 117. Задача на выполнение
+### Коллекции в Java
 
+Коллекции в Java — это структуры данных, предназначенные для хранения и управления множеством объектов. Они предоставляют удобные методы для добавления, удаления, поиска и обработки элементов. Java Collections Framework (JCF) представляет собой набор интерфейсов и классов, которые обеспечивают эффективное управление коллекциями данных.
+
+### Основные цели использования коллекций
+
+1. **Хранение данных**: Коллекции позволяют хранить множество объектов в одной структуре данных.
+2. **Управление данными**: Предоставляют методы для добавления, удаления, поиска и модификации элементов.
+3. **Итерирование**: Обеспечивают возможность прохода по элементам коллекции.
+4. **Сортировка и фильтрация**: Многие коллекции поддерживают сортировку и фильтрацию элементов.
+5. **Гибкость**: Различные реализации коллекций оптимизированы для разных типов задач, что позволяет выбрать наиболее подходящую структуру данных.
+
+### Роль Iterable в Java Collections Framework
+
+**`Iterable`** — это интерфейс, который является корневым для всех коллекций в JCF. Он предоставляет возможность итерирования по элементам коллекции с помощью метода `iterator()`. Этот интерфейс играет ключевую роль в обеспечении унифицированного способа работы с различными типами коллекций.
+
+#### Интерфейс Iterable
+
+```java
+public interface Iterable<T> {
+    Iterator<T> iterator();
+}
+```
+
+- **`iterator()`**: Возвращает объект `Iterator`, который позволяет последовательно проходить по элементам коллекции.
+
+#### Интерфейс Iterator
+
+```java
+public interface Iterator<T> {
+    boolean hasNext(); // Проверяет наличие следующего элемента
+    T next();          // Возвращает следующий элемент
+    default void remove(); // Удаляет текущий элемент (необязательный метод)
+}
+```
+
+### Примеры использования Iterable и Iterator
+
+#### Пример 1: Использование Iterator для прохода по коллекции
+
+```java
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class IteratorExample {
+    public static void main(String[] args) {
+        List<String> names = new ArrayList<>();
+        names.add("Alice");
+/XMLSchemaException
+```
+
+Очевидно, произошла ошибка форматирования текста. Давайте продолжим примеры и объяснения без прерываний.
+
+### Примеры использования Iterable и Iterator (продолжение)
+
+#### Пример 1: Использование Iterator для прохода по коллекции
+
+```java
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class IteratorExample {
+    public static void main(String[] args) {
+        List<String> names = new ArrayList<>();
+        names.add("Alice");
+        names.add("Bob");
+        names.add("Charlie");
+
+        Iterator<String> iterator = names.iterator();
+
+        while (iterator.hasNext()) {
+            String name = iterator.next();
+            System.out.println(name);
+        }
+    }
+}
+```
+
+В этом примере мы создаем список строк и используем `Iterator` для последовательного прохода по элементам списка.
+
+#### Пример 2: Использование for-each цикла
+
+Java также предоставляет удобный синтаксис для итерации через коллекции с использованием цикла `for-each`.
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class ForEachExample {
+    public static void main(String[] args) {
+        List<String> names = new ArrayList<>();
+        names.add("Alice");
+        names.add("Bob");
+        names.add("Charlie");
+
+        for (String name : names) {
+            System.out.println(name);
+        }
+    }
+}
+```
+
+Цикл `for-each` автоматически использует `Iterator` для прохода по элементам коллекции.
+
+#### Пример 3: Реализация Iterable в пользовательском классе
+
+Вы можете реализовать интерфейс `Iterable` в своих собственных классах для предоставления возможности итерации через их элементы.
+
+```java
+import java.util.Iterator;
+
+public class CustomCollection<T> implements Iterable<T> {
+    private T[] elements;
+    private int size;
+
+    @SuppressWarnings("unchecked")
+    public CustomCollection(int capacity) {
+        this.elements = (T[]) new Object[capacity];
+        this.size = 0;
+    }
+
+    public void add(T element) {
+        if (size < elements.length) {
+            elements[size++] = element;
+        }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private int currentIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < size;
+            }
+
+            @Override
+            public T next() {
+                return elements[currentIndex++];
+            }
+        };
+    }
+
+    public static void main(String[] args) {
+        CustomCollection<String> customCollection = new CustomCollection<>(5);
+        customCollection.add("One");
+        customCollection.add("Two");
+        customCollection.add("Three");
+
+        for (String element : customCollection) {
+            System.out.println(element);
+        }
+    }
+}
+```
+
+В этом примере мы создали пользовательскую коллекцию, которая реализует интерфейс `Iterable`, позволяя использовать её с циклом `for-each`.
+
+### Преимущества использования Iterable
+
+1. **Единый интерфейс**: Все коллекции в JCF реализуют интерфейс `Iterable`, что обеспечивает единообразие в работе с различными типами коллекций.
+2. **Универсальный доступ**: Использование `Iterator` или цикла `for-each` позволяет легко работать с любыми коллекциями, независимо от их внутренней реализации.
+3. **Безопасность**: Использование `Iterator` позволяет безопасно изменять коллекцию во время итерации, особенно с использованием метода `ListIterator` для двунаправленной итерации.
+4. **Гибкость**: Возможность создания собственных реализаций `Iterable` для пользовательских структур данных.
+
+## 113. Коллекции в Java. Реализации List - ArrayList. Особенности функционирования ArrayList. Пример использования ArrayList.
+### Реализации List - ArrayList в Java
+
+`ArrayList` — это одна из наиболее часто используемых реализаций интерфейса `List` в Java Collections Framework (JCF). Он основан на динамическом массиве и предоставляет ряд преимуществ для хранения и управления коллекциями данных.
+
+### Особенности функционирования ArrayList
+
+1. **Основан на массиве**: Внутри `ArrayList` использует массив для хранения элементов. Это позволяет обеспечить быстрый доступ к элементам по индексу (O(1) время).
+
+2. **Динамическое изменение размера**: Если текущий массив заполняется, `ArrayList` автоматически создает новый массив большего размера и копирует в него существующие элементы.
+
+3. **Упорядоченная коллекция**: Элементы в `ArrayList` сохраняются в порядке их добавления.
+
+4. **Размер и емкость**:
+   - **Размер (`size()`)**: Количество элементов в списке.
+   - **Емкость (`capacity`)**: Текущий размер внутреннего массива. Емкость может быть больше размера, чтобы избежать частого пересоздания массива при добавлении новых элементов.
+
+5. **Производительность операций**:
+   - **Добавление элемента в конец списка**: O(1) в среднем, но может быть O(n), если требуется увеличение емкости.
+   - **Добавление элемента в начало или середину списка**: O(n), так как требует сдвига всех последующих элементов.
+   - **Удаление элемента**: O(n), так как требует сдвига всех последующих элементов.
+   - **Доступ к элементу по индексу**: O(1).
+
+6. **Не потокобезопасный**: `ArrayList` не является потокобезопасным. Для использования в многопоточной среде можно использовать `Collections.synchronizedList()` или `CopyOnWriteArrayList`.
+
+### Пример использования ArrayList
+
+#### Пример 1: Базовые операции с ArrayList
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class ArrayListExample {
+    public static void main(String[] args) {
+        // Создание ArrayList
+        List<String> names = new ArrayList<>();
+
+        // Добавление элементов
+        names.add("Alice");
+        names.add("Bob");
+        names.add("Charlie");
+
+        System.out.println("Initial list: " + names);
+
+        // Добавление элемента по индексу
+        names.add(1, "David");
+        System.out.println("After adding David at index 1: " + names);
+
+        // Получение элемента по индексу
+        String secondElement = names.get(1);
+        System.out.println("Element at index 1: " + secondElement);
+
+        // Удаление элемента по индексу
+        String removedElement = names.remove(2);
+        System.out.println("Removed element: " + removedElement);
+        System.out.println("After removal: " + names);
+
+        // Проверка наличия элемента
+        boolean containsBob = names.contains("Bob");
+        System.out.println("Contains Bob: " + containsBob);
+
+        // Получение размера списка
+        int size = names.size();
+        System.out.println("Size of the list: " + size);
+    }
+}
+```
+
+#### Пример 2: Использование цикла for-each для итерации по ArrayList
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class ForEachExample {
+    public static void main(String[] args) {
+        List<String> names = new ArrayList<>();
+        names.add("Alice");
+        names.add("Bob");
+        names.add("Charlie");
+
+        // Итерация через цикл for-each
+        for (String name : names) {
+            System.out.println(name);
+        }
+
+        // Итерация через Stream API
+        names.stream().forEach(System.out::println);
+    }
+}
+```
+
+#### Пример 3: Работа с подсписками (subList)
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class SubListExample {
+    public static void main(String[] args) {
+        List<String> names = new ArrayList<>();
+        names.add("Alice");
+        names.add("Bob");
+        names.add("Charlie");
+        names.add("David");
+        names.add("Eve");
+
+        // Получение подсписка
+        List<String> subList = names.subList(1, 4); // [1, 4) -> ["Bob", "Charlie", "David"]
+        System.out.println("Sublist: " + subList);
+
+        // Изменение элемента в подсписке
+        subList.set(1, "Diana");
+        System.out.println("Names after modification: " + names);
+    }
+}
+```
+
+#### Пример 4: Обработка исключений при работе с ArrayList
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class ExceptionHandlingExample {
+    public static void main(String[] args) {
+        List<String> names = new ArrayList<>();
+        names.add("Alice");
+        names.add("Bob");
+
+        try {
+            // Доступ к элементу по некорректному индексу
+            String thirdElement = names.get(2);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Caught exception: " + e.getMessage());
+        }
+
+        try {
+            // Удаление элемента по некорректному индексу
+            names.remove(2);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Caught exception: " + e.getMessage());
+        }
+    }
+}
+```
+
+## 114. Коллекции в Java. Создание Generic Collection в Java. Преимущства данного подхода. Примеры. 
+### Создание Generic Collection в Java
+
+Generic Collections (обобщенные коллекции) в Java позволяют создавать коллекции, которые могут работать с любыми типами данных, сохраняя при этом типобезопасность. Это обеспечивает гибкость и удобство использования, так как не требуется явное приведение типов.
+
+### Преимущества использования Generic Collections
+
+1. **Типобезопасность**: Компилятор проверяет типы во время компиляции, что предотвращает ошибки времени выполнения, связанные с неправильными типами.
+2. **Читаемость кода**: Использование обобщений делает код более понятным и поддерживаемым.
+3. **Отсутствие необходимости приведения типов**: Обобщенные коллекции автоматически обеспечивают правильный тип элементов, что исключает необходимость явного приведения типов.
+4. **Переиспользуемость кода**: Обобщенные коллекции можно использовать для различных типов данных без необходимости создания отдельных реализаций для каждого типа.
+
+### Примеры создания и использования Generic Collections
+
+#### Пример 1: Использование стандартной обобщенной коллекции
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class GenericCollectionExample {
+    public static void main(String[] args) {
+        // Создание обобщенной коллекции для хранения строк
+        List<String> stringList = new ArrayList<>();
+        stringList.add("Alice");
+        stringList.add("Bob");
+
+        for (String name : stringList) {
+            System.out.println(name);
+        }
+
+        // Создание обобщенной коллекции для хранения чисел
+        List<Integer> integerList = new ArrayList<>();
+        integerList.add(1);
+        integerList.add(2);
+
+        for (Integer number : integerList) {
+            System.out.println(number);
+        }
+    }
+}
+```
+
+В этом примере мы создаем две коллекции: одну для строк и другую для целых чисел. Обобщенная коллекция `ArrayList` позволяет работать с любыми типами данных, сохраняя типобезопасность.
+
+#### Пример 2: Создание пользовательской обобщенной коллекции
+
+Давайте создадим простую пользовательскую коллекцию, которая будет работать с любыми типами данных.
+
+```java
+import java.util.Iterator;
+
+public class CustomGenericCollection<T> implements Iterable<T> {
+    private T[] elements;
+    private int size;
+
+    @SuppressWarnings("unchecked")
+    public CustomGenericCollection(int capacity) {
+        this.elements = (T[]) new Object[capacity];
+        this.size = 0;
+    }
+
+    public void add(T element) {
+        if (size < elements.length) {
+            elements[size++] = element;
+        } else {
+            throw new IllegalStateException("Collection is full");
+        }
+    }
+
+    public T get(int index) {
+        if (index >= 0 && index < size) {
+            return elements[index];
+        } else {
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private int currentIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < size;
+            }
+
+            @Override
+            public T next() {
+                return elements[currentIndex++];
+            }
+        };
+    }
+
+    public static void main(String[] args) {
+        // Создание пользовательской обобщенной коллекции для строк
+        CustomGenericCollection<String> stringCollection = new CustomGenericCollection<>(5);
+        stringCollection.add("Alice");
+        stringCollection.add("Bob");
+
+        for (String name : stringCollection) {
+            System.out.println(name);
+        }
+
+        // Создание пользовательской обобщенной коллекции для чисел
+        CustomGenericCollection<Integer> integerCollection = new CustomGenericCollection<>(5);
+        integerCollection.add(1);
+        integerCollection.add(2);
+
+        for (Integer number : integerCollection) {
+            System.out.println(number);
+        }
+    }
+}
+```
+
+В этом примере мы создали пользовательскую обобщенную коллекцию `CustomGenericCollection`, которая может работать с любыми типами данных. Мы также реализовали интерфейс `Iterable`, чтобы позволить проход по элементам коллекции с помощью цикла `for-each`.
+
+#### Пример 3: Использование ограничений на типы
+
+Иногда полезно задать ограничения на типы, которые могут использоваться в обобщенных коллекциях. Например, мы можем ограничить коллекцию только объектами, являющимися подклассами определенного класса или реализующими определенный интерфейс.
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+class Animal {
+    public void makeSound() {
+        System.out.println("Animal sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("Bark");
+    }
+}
+
+class Cat extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("Meow");
+    }
+}
+
+public class BoundedGenericCollectionExample {
+    public static void main(String[] args) {
+        // Создание обобщенной коллекции для животных
+        List<Animal> animalList = new ArrayList<>();
+        animalList.add(new Dog());
+        animalList.add(new Cat());
+
+        for (Animal animal : animalList) {
+            animal.makeSound();
+        }
+
+        // Создание обобщенной коллекции с верхней границей
+        List<? extends Animal> boundedList = new ArrayList<Dog>();
+        // boundedList.add(new Dog()); // Ошибка компиляции, нельзя добавлять элементы в коллекцию с верхней границей
+        for (Animal animal : boundedList) {
+            animal.makeSound();
+        }
+    }
+}
+```
+
+В этом примере мы создаем коллекцию `animalList`, которая может содержать объекты, являющиеся подклассами `Animal`. Мы также демонстрируем использование верхней границы (`<? extends Animal>`), которая позволяет читать элементы из коллекции, но не позволяет добавлять новые элементы.
+
+## 115. Коллекции и Generics. Использование Generics для типобезопасности в коллекциях. Примеры создания типизированных списков и множеств.
+### Коллекции и Generics
+
+Generics (обобщения) в Java позволяют создавать типобезопасные коллекции, которые могут работать с любыми типами данных без необходимости явного приведения типов. Это обеспечивает дополнительную безопасность и удобство при работе с коллекциями.
+
+### Использование Generics для типобезопасности в коллекциях
+
+Когда вы используете обобщенные коллекции, компилятор проверяет типы элементов во время компиляции, что предотвращает ошибки времени выполнения, связанные с неправильными типами данных. Это особенно полезно, так как исключает необходимость приведения типов и делает код более читаемым и поддерживаемым.
+
+### Примеры создания типизированных списков и множеств
+
+#### Пример 1: Типизированный список (ArrayList)
+
+В этом примере мы создадим типизированный список для хранения строковых значений.
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class TypedListExample {
+    public static void main(String[] args) {
+        // Создание типизированного списка для строк
+        List<String> stringList = new ArrayList<>();
+        
+        // Добавление элементов в список
+        stringList.add("Alice");
+        stringList.add("Bob");
+        
+        // Чтение элементов из списка
+        for (String name : stringList) {
+            System.out.println(name);
+        }
+        
+        // Попытка добавить элемент другого типа вызовет ошибку компиляции
+        // stringList.add(123); // Ошибка компиляции: несоответствие типов
+    }
+}
+```
+
+#### Пример 2: Типизированное множество (HashSet)
+
+В этом примере мы создадим типизированное множество для хранения числовых значений.
+
+```java
+import java.util.HashSet;
+import java.util.Set;
+
+public class TypedSetExample {
+    public static void main(String[] args) {
+        // Создание типизированного множества для целых чисел
+        Set<Integer> integerSet = new HashSet<>();
+        
+        // Добавление элементов в множество
+        integerSet.add(1);
+        integerSet.add(2);
+        integerSet.add(1); // Дубликат будет проигнорирован
+        
+        // Чтение элементов из множества
+        for (Integer number : integerSet) {
+            System.out.println(number);
+        }
+        
+        // Попытка добавить элемент другого типа вызовет ошибку компиляции
+        // integerSet.add("Hello"); // Ошибка компиляции: несоответствие типов
+    }
+}
+```
+
+#### Пример 3: Типизированное множество с верхней границей
+
+В этом примере мы создадим типизированное множество для объектов, являющихся подклассами класса `Animal`.
+
+```java
+import java.util.HashSet;
+import java.util.Set;
+
+class Animal {
+    public void makeSound() {
+        System.out.println("Animal sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("Bark");
+    }
+}
+
+class Cat extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("Meow");
+    }
+}
+
+public class BoundedTypedSetExample {
+    public static void main(String[] args) {
+        // Создание типизированного множества для животных
+        Set<Animal> animalSet = new HashSet<>();
+        
+        // Добавление элементов в множество
+        animalSet.add(new Dog());
+        animalSet.add(new Cat());
+        
+        // Чтение элементов из множества и вызов метода makeSound
+        for (Animal animal : animalSet) {
+            animal.makeSound();
+        }
+        
+        // Создание множества с верхней границей
+        Set<? extends Animal> boundedSet = new HashSet<Dog>();
+        for (Animal animal : boundedSet) {
+            animal.makeSound();
+        }
+        
+        // Нельзя добавлять новые элементы в множество с верхней границей
+        // boundedSet.add(new Dog()); // Ошибка компиляции: нельзя добавлять элементы в множество с верхней границей
+    }
+}
+```
+
+#### Пример 4: Метод с обобщенным параметром типа
+
+В этом примере мы создадим метод, который принимает типизированный список и выводит его элементы на консоль.
+
+```java
+import java.util.List;
+
+public class GenericMethodExample {
+
+    // Обобщенный метод для вывода элементов списка
+    public static <T> void printList(List<T> list) {
+        for (T element : list) {
+            System.out.println(element);
+        }
+    }
+
+    public static void main(String[] args) {
+        // Создание типизированного списка для строк
+        List<String> stringList = List.of("Alice", "Bob", "Charlie");
+        
+        // Вызов обобщенного метода для вывода строкового списка
+        printList(stringList);
+
+        // Создание типизированного списка для чисел
+        List<Integer> integerList = List.of(1, 2, 3);
+        
+        // Вызов обобщенного метода для вывода числового списка
+        printList(integerList);
+    }
+}
+```
+
+#### Пример 5: Использование подстановочных знаков
+
+В этом примере мы покажем использование подстановочных знаков (`?`) и их ограничений (`extends` и `super`).
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+class Animal {
+    public void makeSound() {
+        System.out.println("Animal sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("Bark");
+    }
+}
+
+class Cat extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("Meow");
+    }
+}
+
+public class WildcardExample {
+
+    // Метод для вывода элементов списка с верхней границей
+    public static void printAnimals(List<? extends Animal> animals) {
+        for (Animal animal : animals) {
+            animal.makeSound();
+        }
+    }
+
+    // Метод для добавления элементов в список с нижней границей
+    public static void addAnimals(List<? super Animal> animals) {
+        animals.add(new Animal());
+        animals.add(new Dog());
+        animals.add(new Cat());
+    }
+
+    public static void main(String[] args) {
+        List<Dog> dogs = Arrays.asList(new Dog(), new Dog());
+        List<Cat> cats = Arrays.asList(new Cat(), new Cat());
+        List<Animal> animals = new ArrayList<>();
+
+        // Вывод элементов списка с верхней границей
+        printAnimals(dogs);
+        printAnimals(cats);
+
+        // Добавление элементов в список с нижней границей
+        addAnimals(animals);
+        for (Object obj : animals) {
+            ((Animal) obj).makeSound();
+        }
+    }
+}
+```
+
+## 116. ArrayList в Java. Понятие ArrayList как реализации интерфейса List. Основные методы (add, get, remove) для работы со списками. Примеры добавления, удаления и доступа к элементам.
+### ArrayList в Java
+
+`ArrayList` — это одна из наиболее часто используемых реализаций интерфейса `List` в Java Collections Framework (JCF). Он основан на динамическом массиве и предоставляет удобные методы для работы с коллекциями данных.
+
+### Основные методы ArrayList
+
+Ниже приведены основные методы, которые используются для работы со списками:
+
+1. **add(E e)**: Добавляет элемент в конец списка.
+2. **add(int index, E element)**: Вставляет элемент по указанному индексу, сдвигая все последующие элементы вправо.
+3. **get(int index)**: Возвращает элемент по указанному индексу.
+4. **remove(int index)**: Удаляет элемент по указанному индексу и сдвигает все последующие элементы влево.
+5. **size()**: Возвращает количество элементов в списке.
+6. **clear()**: Удаляет все элементы из списка.
+7. **contains(Object o)**: Проверяет, содержит ли список указанный элемент.
+8. **indexOf(Object o)**: Возвращает индекс первого вхождения указанного элемента в списке, или `-1`, если элемент не найден.
+9. **set(int index, E element)**: Заменяет элемент по указанному индексу новым элементом.
+
+### Примеры добавления, удаления и доступа к элементам
+
+#### Пример 1: Базовые операции с ArrayList
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class ArrayListExample {
+    public static void main(String[] args) {
+        // Создание ArrayList
+        List<String> names = new ArrayList<>();
+
+        // Добавление элементов
+        names.add("Alice");
+        names.add("Bob");
+        names.add("Charlie");
+
+        System.out.println("Initial list: " + names);
+
+        // Добавление элемента по индексу
+        names.add(1, "David");
+        System.out.println("After adding David at index 1: " + names);
+
+        // Получение элемента по индексу
+        String secondElement = names.get(1);
+        System.out.println("Element at index 1: " + secondElement);
+
+        // Удаление элемента по индексу
+        String removedElement = names.remove(2);
+        System.out.println("Removed element: " + removedElement);
+        System.out.println("After removal: " + names);
+
+        // Проверка наличия элемента
+        boolean containsBob = names.contains("Bob");
+        System.out.println("Contains Bob: " + containsBob);
+
+        // Получение размера списка
+        int size = names.size();
+        System.out.println("Size of the list: " + size);
+
+        // Замена элемента
+        names.set(0, "Eve");
+        System.out.println("After replacing Alice with Eve: " + names);
+
+        // Удаление всех элементов
+        names.clear();
+        System.out.println("After clearing the list: " + names);
+    }
+}
+```
+
+#### Пример 2: Использование цикла for-each для итерации по ArrayList
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class ForEachExample {
+    public static void main(String[] args) {
+        List<String> names = new ArrayList<>();
+        names.add("Alice");
+        names.add("Bob");
+        names.add("Charlie");
+
+        // Итерация через цикл for-each
+        for (String name : names) {
+            System.out.println(name);
+        }
+
+        // Итерация через Stream API
+        names.stream().forEach(System.out::println);
+    }
+}
+```
+
+#### Пример 3: Работа с подсписками (subList)
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class SubListExample {
+    public static void main(String[] args) {
+        List<String> names = new ArrayList<>();
+        names.add("Alice");
+        names.add("Bob");
+        names.add("Charlie");
+        names.add("David");
+        names.add("Eve");
+
+        // Получение подсписка
+        List<String> subList = names.subList(1, 4); // [1, 4) -> ["Bob", "Charlie", "David"]
+        System.out.println("Sublist: " + subList);
+
+        // Изменение элемента в подсписке
+        subList.set(1, "Diana");
+        System.out.println("Names after modification: " + names);
+    }
+}
+```
+
+#### Пример 4: Обработка исключений при работе с ArrayList
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class ExceptionHandlingExample {
+    public static void main(String[] args) {
+        List<String> names = new ArrayList<>();
+        names.add("Alice");
+        names.add("Bob");
+
+        try {
+            // Доступ к элементу по некорректному индексу
+            String thirdElement = names.get(2);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Caught exception: " + e.getMessage());
+        }
+
+        try {
+            // Удаление элемента по некорректному индексу
+            names.remove(2);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Caught exception: " + e.getMessage());
+        }
+    }
+}
+```
+
+#### Пример 5: Использование Iterator для безопасной модификации списка
+
+```java
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class IteratorExample {
+    public static void main(String[] args) {
+        List<String> names = new ArrayList<>();
+        names.add("Alice");
+        names.add("Bob");
+        names.add("Charlie");
+
+        Iterator<String> iterator = names.iterator();
+
+        while (iterator.hasNext()) {
+            String name = iterator.next();
+            if (name.equals("Bob")) {
+                iterator.remove(); // Безопасное удаление во время итерации
+            }
+        }
+
+        System.out.println("List after removing Bob: " + names);
+    }
+}
+```
+
+## 117. Задача на выполнение
+Чё?
 
