@@ -3262,7 +3262,332 @@ public class GridBagLayoutExample {
 ```
 
 ## 88. Менеджеры компоновки в Java. Роль менеджеров компоновки в управлении размещением компонентов. Примеры использования менеджеров FlowLayout, BorderLayout, GridLayout.
+### Менеджеры компоновки в Java
+
+**Менеджеры компоновки (Layout Managers)** в Java Swing отвечают за размещение и организацию компонентов внутри контейнеров, таких как `JFrame`, `JPanel` и другие. Они автоматически управляют расположением и размерами компонентов, что позволяет создавать гибкие и адаптивные пользовательские интерфейсы.
+
+### Роль менеджеров компоновки
+
+1. **Автоматическое управление расположением**: Менеджеры компоновки автоматически расставляют компоненты в контейнере согласно выбранной стратегии.
+2. **Адаптивность**: Компоненты могут автоматически изменять свои размеры и положение при изменении размеров окна.
+3. **Удобство использования**: Разработчику не нужно вручную задавать координаты и размеры каждого компонента, что значительно упрощает процесс создания интерфейсов.
+
+### Примеры использования менеджеров компоновки
+
+#### FlowLayout
+
+**FlowLayout** располагает компоненты последовательно слева направо и сверху вниз. Когда достигается край контейнера, следующий компонент переходит на новую строку.
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class FlowLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("FlowLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки FlowLayout
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+
+        // Добавляем кнопки на панель
+        panel.add(new JButton("Button 1"));
+        panel.add(new JButton("Button 2"));
+        panel.add(new JButton("Button 3"));
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### BorderLayout
+
+**BorderLayout** делит контейнер на пять областей: север, юг, запад, восток и центр. Каждая область может содержать один компонент.
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class BorderLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("BorderLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки BorderLayout
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        // Добавляем кнопки на панель в различные области BorderLayout
+        panel.add(new JButton("North"), BorderLayout.NORTH);
+        panel.add(new JButton("South"), BorderLayout.SOUTH);
+        panel.add(new JButton("East"), BorderLayout.EAST);
+        panel.add(new JButton("West"), BorderLayout.WEST);
+        panel.add(new JButton("Center"), BorderLayout.CENTER);
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### GridLayout
+
+**GridLayout** разделяет контейнер на сетку фиксированного размера, где каждый компонент занимает одну ячейку сетки.
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class GridLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("GridLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки GridLayout
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 2)); // 3 строки и 2 столбца
+
+        // Добавляем кнопки на панель
+        panel.add(new JButton("Button 1"));
+        panel.add(new JButton("Button 2"));
+        panel.add(new JButton("Button 3"));
+        panel.add(new JButton("Button 4"));
+        panel.add(new JButton("Button 5"));
+        panel.add(new JButton("Button 6"));
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+### Дополнительные примеры
+
+#### GridBagLayout
+
+**GridBagLayout** — это более гибкий менеджер компоновки, который позволяет задавать различные параметры для каждого компонента, такие как положение, размер, выравнивание и привязка к другим компонентам.
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class GridBagLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("GridBagLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки GridBagLayout
+        JPanel panel = new JPanel();
+        GridBagLayout layout = new GridBagLayout();
+        panel.setLayout(layout);
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        // Устанавливаем параметры для первой кнопки
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        panel.add(new JButton("Button 1"), gbc);
+
+        // Устанавливаем параметры для второй кнопки
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        panel.add(new JButton("Button 2"), gbc);
+
+        // Устанавливаем параметры для третьей кнопки
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2; // Эта кнопка занимает две колонки
+        panel.add(new JButton("Button 3"), gbc);
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
 ## 89. Менеджер FlowLayout. Как работает FlowLayout? Примеры настройки выравнивания и промежутков между компонентами.
+### Менеджер FlowLayout
+
+**FlowLayout** — это один из самых простых менеджеров компоновки в Swing, который располагает компоненты последовательно слева направо и сверху вниз. Когда достигается край контейнера, следующий компонент переходит на новую строку.
+
+### Как работает FlowLayout?
+
+1. **Последовательное размещение**: Компоненты добавляются в контейнер последовательно, начиная с левого верхнего угла.
+2. **Перенос на новую строку**: Если текущая строка заполнилась, следующий компонент переносится на новую строку.
+3. **Выравнивание**: Можно задать выравнивание компонентов относительно контейнера (слева, по центру или справа).
+4. **Промежутки между компонентами**: Можно задать горизонтальные и вертикальные промежутки между компонентами.
+
+### Конструкторы и методы FlowLayout
+
+- **Конструкторы**:
+  - `FlowLayout()`: Создает макет с центрированным выравниванием и стандартными промежутками.
+  - `FlowLayout(int align)`: Создает макет с указанным выравниванием и стандартными промежутками.
+  - `FlowLayout(int align, int hgap, int vgap)`: Создает макет с указанным выравниванием и заданными горизонтальными и вертикальными промежутками.
+
+- **Методы**:
+  - `setAlignment(int align)`: Устанавливает выравнивание компонентов.
+  - `setHgap(int hgap)`: Устанавливает горизонтальный промежуток между компонентами.
+  - `setVgap(int vgap)`: Устанавливает вертикальный промежуток между компонентами.
+  - `getAlignment()`, `getHgap()`, `getVgap()`: Получают текущие значения выравнивания и промежутков.
+
+### Примеры настройки выравнивания и промежутков между компонентами
+
+#### Пример 1: Базовый FlowLayout
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class BasicFlowLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Basic FlowLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки FlowLayout
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+
+        // Добавляем кнопки на панель
+        panel.add(new JButton("Button 1"));
+        panel.add(new JButton("Button 2"));
+        panel.add(new JButton("Button 3"));
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 2: Настройка выравнивания
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class AlignmentFlowLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Alignment FlowLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки FlowLayout с выравниванием по правому краю
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+        // Добавляем кнопки на панель
+        panel.add(new JButton("Button 1"));
+        panel.add(new JButton("Button 2"));
+        panel.add(new JButton("Button 3"));
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 3: Настройка промежутков между компонентами
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class GapFlowLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Gap FlowLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки FlowLayout с заданными промежутками
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10)); // Горизонтальный промежуток 20 пикселей, вертикальный 10 пикселей
+
+        // Добавляем кнопки на панель
+        panel.add(new JButton("Button 1"));
+        panel.add(new JButton("Button 2"));
+        panel.add(new JButton("Button 3"));
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 4: Изменение выравнивания и промежутков через методы
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class DynamicFlowLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Dynamic FlowLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки FlowLayout
+        JPanel panel = new JPanel();
+        FlowLayout flowLayout = new FlowLayout();
+        panel.setLayout(flowLayout);
+
+        // Добавляем кнопки на панель
+        panel.add(new JButton("Button 1"));
+        panel.add(new JButton("Button 2"));
+        panel.add(new JButton("Button 3"));
+
+        // Изменяем выравнивание и промежутки через методы
+        flowLayout.setAlignment(FlowLayout.RIGHT);
+        flowLayout.setHgap(30);
+        flowLayout.setVgap(15);
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
 ## 90. Менеджеры компоновки в Java. Роль менеджеров компоновки в управлении размещением компонентов. Примеры использования менеджеров FlowLayout, BorderLayout, GridLayout.
 ## 91. Менеджер FlowLayout. Как работает FlowLayout? Примеры настройки выравнивания и промежутков между компонентами.
 ## 92. Менеджер BorderLayout. Как BorderLayout делит контейнер на регионы (NORTH, SOUTH, EAST, WEST, CENTER)? Примеры создания интерфейсов с четкой организацией областей.
