@@ -4969,7 +4969,513 @@ public class LambdaButtonExample {
 ```
 
 ## 98. Обработка событий при реализации GUI в JAVA. Классы событий пакета java.awt.event. Какие классы событий предоставляет пакет java.awt.event? Примеры обработки событий мыши и клавиатуры.
+### Обработка событий при реализации GUI в Java
+
+Обработка событий является ключевым аспектом создания интерактивных графических пользовательских интерфейсов (GUI) в Java. В пакете `java.awt.event` и его подпакете `javax.swing.event` содержатся классы для работы с различными типами событий, которые могут происходить в GUI-приложениях.
+
+### Классы событий пакета java.awt.event
+
+Пакет `java.awt.event` предоставляет множество классов для обработки различных типов событий:
+
+1. **ActionEvent**: Событие, возникающее при выполнении действия, например, нажатие кнопки.
+2. **MouseEvent**: Событие, связанное с действиями мыши, такие как клик, перемещение курсора, нажатие клавиш мыши.
+3. **KeyEvent**: Событие, связанное с действиями клавиатуры, такие как нажатие клавиш.
+4. **WindowEvent**: Событие, связанное с окнами, такие как открытие, закрытие, сворачивание окна.
+5. **ItemEvent**: Событие, возникающее при изменении состояния элементов, таких как чекбоксы или радиокнопки.
+6. **TextEvent**: Событие, связанное с изменениями текста в текстовых полях.
+
+### Примеры обработки событий мыши и клавиатуры
+
+#### Пример 1: Обработка события нажатия кнопки (ActionEvent)
+
+```java
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class ButtonClickExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Button Click Example");
+        frame.setSize(300, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем кнопку
+        JButton button = new JButton("Click Me");
+
+        // Регистрируем слушатель события нажатия кнопки
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Button Clicked!");
+            }
+        });
+
+        // Добавляем кнопку в окно
+        frame.add(button);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 2: Обработка событий мыши (MouseEvent)
+
+```java
+import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class MouseEventsExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Mouse Events Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель для обработки событий мыши
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.LIGHT_GRAY);
+
+        // Регистрируем слушатель событий мыши
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JOptionPane.showMessageDialog(frame, "Mouse clicked at (" + e.getX() + ", " + e.getY() + ")");
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                System.out.println("Mouse pressed at (" + e.getX() + ", " + e.getY() + ")");
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                System.out.println("Mouse released at (" + e.getX() + ", " + e.getY() + ")");
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                System.out.println("Mouse entered the panel");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                System.out.println("Mouse exited the panel");
+            }
+        });
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 3: Обработка событий клавиатуры (KeyEvent)
+
+```java
+import javax.swing.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+public class KeyEventsExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Key Events Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем текстовое поле для обработки событий клавиатуры
+        JTextField textField = new JTextField();
+
+        // Регистрируем слушатель событий клавиатуры
+        textField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                System.out.println("Key pressed: " + KeyEvent.getKeyText(e.getKeyCode()));
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                System.out.println("Key released: " + KeyEvent.getKeyText(e.getKeyCode()));
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                System.out.println("Key typed: " + e.getKeyChar());
+            }
+        });
+
+        // Добавляем текстовое поле в окно
+        frame.add(textField);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 4: Обработка событий мыши и клавиатуры одновременно
+
+```java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class CombinedEventsExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Combined Events Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель для обработки событий мыши
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawString("Click or type here", 100, 100);
+            }
+        };
+
+        // Регистрируем слушатель событий мыши
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JOptionPane.showMessageDialog(frame, "Mouse clicked at (" + e.getX() + ", " + e.getY() + ")");
+            }
+        });
+
+        // Регистрируем слушатель событий клавиатуры
+        panel.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                System.out.println("Key pressed: " + KeyEvent.getKeyText(e.getKeyCode()));
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                System.out.println("Key released: " + KeyEvent.getKeyText(e.getKeyCode()));
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                System.out.println("Key typed: " + e.getKeyChar());
+            }
+        });
+
+        // Устанавливаем фокус на панели для обработки событий клавиатуры
+        panel.setFocusable(true);
+        panel.requestFocusInWindow();
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+### Описание классов событий
+
+1. **ActionEvent**: Событие, возникающее при выполнении действия, например, нажатии кнопки.
+   - Используется с компонентами, такими как `JButton`, `JMenuItem`.
+
+2. **MouseEvent**: Событие, связанное с действиями мыши, такие как клик, перемещение курсора, нажатие клавиш мыши.
+   - Используется с компонентами, такими как `JPanel`, `JButton`.
+
+3. **KeyEvent**: Событие, связанное с действиями клавиатуры, такие как нажатие и отпускание клавиш.
+   - Используется с компонентами, такими как `JTextField`, `JTextArea`.
+
+4. **WindowEvent**: Событие, связанное с окнами, такие как открытие, закрытие, сворачивание окна.
+   - Используется с компонентами, такими как `JFrame`.
+
+5. **ItemEvent**: Событие, возникающее при изменении состояния элементов, таких как чекбоксы или радиокнопки.
+   - Используется с компонентами, такими как `JCheckBox`, `JRadioButton`.
+
+6. **TextEvent**: Событие, связанное с изменениями текста в текстовых полях.
+   - Используется с компонентами, такими как `JTextField`, `JTextArea`.
+
+### Подробнее о классах событий
+
+#### ActionEvent
+
+- **Конструктор**:
+  ```java
+  ActionEvent(Object source, int id, String command)
+  ```
+- **Методы**:
+  - `getSource()`: Возвращает источник события.
+  - `getID()`: Возвращает идентификатор события.
+  - `getActionCommand()`: Возвращает команду действия, связанную с событием.
+
+#### MouseEvent
+
+- **Конструктор**:
+  ```java
+  MouseEvent(Component source, int id, long when, int modifiers, int x, int y, int clickCount, boolean popupTrigger, int button)
+  ```
+- **Методы**:
+  - `getX()`: Возвращает координату X курсора мыши.
+  - `getY()`: Возвращает координату Y курсора мыши.
+  - `getButton()`: Возвращает номер нажатой кнопки мыши.
+  - `getClickCount()`: Возвращает количество кликов.
+
+#### KeyEvent
+
+- **Конструктор**:
+  ```java
+  KeyEvent(Component source, int id, long when, int modifiers, int keyCode, char keyChar)
+  ```
+- **Методы**:
+  - `getKeyCode()`: Возвращает код нажатой клавиши.
+  - `getKeyChar()`: Возвращает символ, соответствующий нажатой клавише.
+  - `isActionKey()`: Проверяет, является ли нажатая клавиша функциональной клавишей (например, Shift, Ctrl).
+
 ## 99. Обработка событий мыши в JAVA. Как использовать интерфейсы MouseListener и MouseMotionListener для обработки событий мыши? Примеры обработки нажатий и перемещений.
+### Обработка событий мыши в Java
+
+Обработка событий мыши в Java Swing позволяет создавать интерактивные и отзывчивые графические интерфейсы. Для этого используются два основных интерфейса:
+
+1. **MouseListener**: Используется для обработки событий, связанных с нажатиями кнопок мыши (нажатие, отпускание, двойной клик).
+2. **MouseMotionListener**: Используется для обработки событий, связанных с перемещением курсора мыши (перемещение и перетаскивание).
+
+Эти интерфейсы можно реализовать в одном классе или использовать готовые адаптеры (`MouseAdapter`), чтобы избежать необходимости реализовывать все методы интерфейсов.
+
+### Как использовать интерфейсы MouseListener и MouseMotionListener
+
+#### Интерфейс MouseListener
+
+- **Методы**:
+  - `mouseClicked(MouseEvent e)`: Вызывается при двойном щелчке мыши.
+  - `mousePressed(MouseEvent e)`: Вызывается при нажатии кнопки мыши.
+  - `mouseReleased(MouseEvent e)`: Вызывается при отпускании кнопки мыши.
+  - `mouseEntered(MouseEvent e)`: Вызывается, когда курсор мыши входит в область компонента.
+  - `mouseExited(MouseEvent e)`: Вызывается, когда курсор мыши выходит из области компонента.
+
+#### Интерфейс MouseMotionListener
+
+- **Методы**:
+  - `mouseDragged(MouseEvent e)`: Вызывается при перемещении мыши с нажатой кнопкой.
+  - `mouseMoved(MouseEvent e)`: Вызывается при перемещении мыши без нажатых кнопок.
+
+### Примеры обработки нажатий и перемещений
+
+#### Пример 1: Обработка событий нажатий мыши с использованием MouseListener
+
+```java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class MouseClickListenerExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Mouse Click Listener Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель для обработки событий мыши
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawString("Click or move the mouse here", 100, 100);
+            }
+        };
+
+        // Регистрируем слушатель событий мыши
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JOptionPane.showMessageDialog(frame, "Mouse clicked at (" + e.getX() + ", " + e.getY() + ")");
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                System.out.println("Mouse pressed at (" + e.getX() + ", " + e.getY() + ")");
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                System.out.println("Mouse released at (" + e.getX() + ", " + e.getY() + ")");
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                System.out.println("Mouse entered the panel");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                System.out.println("Mouse exited the panel");
+            }
+        });
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 2: Обработка событий перемещения мыши с использованием MouseMotionListener
+
+```java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class MouseMotionListenerExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Mouse Motion Listener Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель для обработки событий мыши
+        JPanel panel = new JPanel() {
+            private Point lastPoint;
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (lastPoint != null) {
+                    g.setColor(Color.RED);
+                    g.fillOval(lastPoint.x - 5, lastPoint.y - 5, 10, 10); // Нарисуем точку на месте последнего клика
+                }
+            }
+        };
+
+        // Регистрируем слушатель событий перемещения мыши
+        panel.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                System.out.println("Mouse dragged at (" + e.getX() + ", " + e.getY() + ")");
+                // Обновляем координаты последней точки и перерисовываем панель
+                ((JPanel) e.getSource()).getGraphics().drawLine(e.getX(), e.getY(), e.getX(), e.getY());
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                System.out.println("Mouse moved to (" + e.getX() + ", " + e.getY() + ")");
+            }
+        });
+
+        // Регистрируем слушатель событий нажатий мыши
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                JPanel panel = (JPanel) e.getSource();
+                Graphics g = panel.getGraphics();
+                g.setColor(Color.BLACK);
+                g.fillRect(e.getX() - 5, e.getY() - 5, 10, 10); // Нарисуем квадрат на месте нажатия
+            }
+        });
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 3: Комбинированная обработка событий мыши с использованием MouseListener и MouseMotionListener
+
+```java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class CombinedMouseEventsExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Combined Mouse Events Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель для обработки событий мыши
+        JPanel panel = new JPanel() {
+            private Point lastPoint;
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (lastPoint != null) {
+                    g.setColor(Color.RED);
+                    g.fillOval(lastPoint.x - 5, lastPoint.y - 5, 10, 10); // Нарисуем точку на месте последнего клика
+                }
+            }
+        };
+
+        // Регистрируем слушатель событий мыши и перемещения мыши
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JOptionPane.showMessageDialog(frame, "Mouse clicked at (" + e.getX() + ", " + e.getY() + ")");
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                System.out.println("Mouse pressed at (" + e.getX() + ", " + e.getY() + ")");
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                System.out.println("Mouse released at (" + e.getX() + ", " + e.getY() + ")");
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                System.out.println("Mouse entered the panel");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                System.out.println("Mouse exited the panel");
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // Сохраняем координаты нажатия
+                panel.getGraphics().fillRect(e.getX() - 5, e.getY() - 5, 10, 10);
+            }
+        });
+
+        panel.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                System.out.println("Mouse dragged at (" + e.getX() + ", " + e.getY() + ")");
+                panel.getGraphics().drawLine(e.getX(), e.getY(), e.getX(), e.getY());
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                System.out.println("Mouse moved to (" + e.getX() + ", " + e.getY() + ")");
+            }
+        });
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
 ## 100. Обработка событий клавиатуры в JAVA. Как обрабатывать события клавиатуры с использованием KeyListener? Примеры регистрации слушателей клавиатурных событий.
 ## 101. Обобщённое программирование в Java. Понятие обобщённого программирования и его роль в упрощении создания алгоритмов для работы с различными типами данных. История разваития в JAVA. Примеры проектирования универсальных структур данных и алгоритмов.
 ## 102. Generics в Java. Реализация обобщенного программирования через Generics. Основные синтаксические конструкции: параметры типов, обобщенные классы и методы. Примеры работы с параметризованными классами и методами. Примущества и недостатки Generics.
