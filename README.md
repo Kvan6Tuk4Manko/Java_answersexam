@@ -6297,6 +6297,317 @@ public class StringContainer implements Container<String> {
 ```
 
 ## 103. Коллекции и Generics в Java. Как использование Generics повысило типобезопасность коллекций, таких как ArrayList, HashMap и HashSet? Примеры создания и обработки коллекций с обобщениями.
+### Коллекции и Generics в Java
+
+**Generics** (обобщения) значительно повысили типобезопасность коллекций в Java, начиная с версии Java 5. До введения обобщений, коллекции могли хранить объекты любого типа, что требовало явного приведения типов при извлечении элементов и увеличивало риск возникновения ошибок времени выполнения, таких как `ClassCastException`.
+
+С появлением Generics разработчики могут указывать конкретные типы данных для коллекций, что позволяет компилятору проверять корректность типов во время компиляции и исключать ошибки приведения типов.
+
+### Как использование Generics повысило типобезопасность коллекций
+
+1. **Типобезопасность**: Обобщённые коллекции гарантируют, что они содержат только объекты указанного типа, что предотвращает ошибки приведения типов.
+2. **Универсальность**: Обобщённые коллекции могут работать с любыми типами данных без потери производительности или безопасности.
+3. **Чистота кода**: Уменьшение необходимости в явном приведении типов делает код более читаемым и поддерживаемым.
+
+### Примеры создания и обработки коллекций с обобщениями
+
+#### Пример 1: ArrayList с использованием Generics
+
+```java
+import java.util.ArrayList;
+
+public class ArrayListExample {
+    public static void main(String[] args) {
+        // Создаем обобщённый ArrayList для хранения строк
+        ArrayList<String> stringList = new ArrayList<>();
+        stringList.add("Apple");
+        stringList.add("Banana");
+        stringList.add("Cherry");
+
+        // Извлечение элементов без необходимости приведения типов
+        for (String fruit : stringList) {
+            System.out.println(fruit);
+        }
+
+        // Попытка добавления элемента другого типа вызовет ошибку компиляции
+        // stringList.add(123); // Ошибка компиляции: несоответствие типов
+    }
+}
+```
+
+#### Пример 2: HashMap с использованием Generics
+
+```java
+import java.util.HashMap;
+
+public class HashMapExample {
+    public static void main(String[] args) {
+        // Создаем обобщённый HashMap для хранения пар "строка-целое число"
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("Apple", 1);
+        map.put("Banana", 2);
+        map.put("Cherry", 3);
+
+        // Извлечение значений без необходимости приведения типов
+        for (String key : map.keySet()) {
+            System.out.println(key + ": " + map.get(key));
+        }
+
+        // Попытка добавления пары другого типа вызовет ошибку компиляции
+        // map.put(123, "Orange"); // Ошибка компиляции: несоответствие типов
+    }
+}
+```
+
+#### Пример 3: HashSet с использованием Generics
+
+```java
+import java.util.HashSet;
+
+public class HashSetExample {
+    public static void main(String[] args) {
+        // Создаем обобщённый HashSet для хранения строк
+        HashSet<String> set = new HashSet<>();
+        set.add("Apple");
+        set.add("Banana");
+        set.add("Cherry");
+
+        // Извлечение элементов без необходимости приведения типов
+        for (String fruit : set) {
+            System.out.println(fruit);
+        }
+
+        // Попытка добавления элемента другого типа вызовет ошибку компиляции
+        // set.add(123); // Ошибка компиляции: несоответствие типов
+    }
+}
+```
+
+### Более сложные примеры
+
+#### Пример 4: Использование wildcard и ограничений на типы
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class WildcardExample {
+    // Метод, принимающий список любого типа, расширяющего Number
+    public static double sumOfList(List<? extends Number> list) {
+        double sum = 0.0;
+        for (Number num : list) {
+            sum += num.doubleValue();
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        List<Integer> intList = new ArrayList<>();
+        intList.add(1);
+        intList.add(2);
+        intList.add(3);
+
+        List<Double> doubleList = new ArrayList<>();
+        doubleList.add(1.1);
+        doubleList.add(2.2);
+        doubleList.add(3.3);
+
+        System.out.println("Sum of integers: " + sumOfList(intList));   // Output: 6.0
+        System.out.println("Sum of doubles: " + sumOfList(doubleList)); // Output: 6.6
+    }
+}
+```
+
+#### Пример 5: Использование нескольких параметров типов в HashMap
+
+```java
+import java.util.HashMap;
+
+public class MultiTypeHashMapExample {
+    public static void main(String[] args) {
+        // Создаем обобщённый HashMap для хранения пар "строка-число"
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("Apple", 1);
+        map.put("Banana", 2);
+        map.put("Cherry", 3);
+
+        // Извлечение значений без необходимости приведения типов
+        for (String key : map.keySet()) {
+            System.out.println(key + ": " + map.get(key));
+        }
+
+        // Создаем обобщённый HashMap для хранения пар "строка-строка"
+        HashMap<String, String> stringMap = new HashMap<>();
+        stringMap.put("Key1", "Value1");
+        stringMap.put("Key2", "Value2");
+
+        // Извлечение значений без необходимости приведения типов
+        for (String key : stringMap.keySet()) {
+            System.out.println(key + ": " + stringMap.get(key));
+        }
+    }
+}
+```
+
+#### Пример 6: Использование методов с Generics
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class GenericMethodExample {
+
+    // Обобщённый метод для печати элементов списка
+    public static <T> void printList(List<T> list) {
+        for (T element : list) {
+            System.out.println(element);
+        }
+    }
+
+    public static void main(String[] args) {
+        List<Integer> intList = new ArrayList<>();
+        intList.add(1);
+        intList.add(2);
+        intList.add(3);
+
+        List<String> strList = new ArrayList<>();
+        strList.add("Hello");
+        strList.add("World");
+
+        printList(intList);   // Output: 1, 2, 3
+        printList(strList);   // Output: Hello, World
+    }
+}
+```
+
+#### Пример 7: Использование обобщённых классов и методов для работы с несколькими типами
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class MultipleGenericTypeExample {
+
+    // Обобщённый класс для работы с двумя типами данных
+    public static class Pair<K, V> {
+        private K key;
+        private V value;
+
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return "(" + key + ", " + value + ")";
+        }
+    }
+
+    // Обобщённый метод для печати пар
+    public static <K, V> void printPairs(List<Pair<K, V>> pairs) {
+        for (Pair<K, V> pair : pairs) {
+            System.out.println(pair);
+        }
+    }
+
+    public static void main(String[] args) {
+        List<Pair<String, Integer>> pairs = new ArrayList<>();
+        pairs.add(new Pair<>("Age", 30));
+        pairs.add(new Pair<>("Height", 180));
+
+        printPairs(pairs); // Output: (Age, 30), (Height, 180)
+
+        List<Pair<Double, String>> otherPairs = new ArrayList<>();
+        otherPairs.add(new Pair<>(3.14, "Pi"));
+        otherPairs.add(new Pair<>(2.71, "Euler's number"));
+
+        printPairs(otherPairs); // Output: (3.14, Pi), (2.71, Euler's number)
+    }
+}
+```
+
+### Преимущества использования Generics с коллекциями
+
+1. **Типобезопасность**: Компилятор проверяет типы данных, что предотвращает ошибки времени выполнения, связанные с неправильным приведением типов.
+2. **Универсальность**: Коллекции могут работать с любыми типами данных, что делает их более гибкими и повторно используемыми.
+3. **Чистота кода**: Уменьшение необходимости в явном приведении типов делает код более читаемым и поддерживаемым.
+
+### Недостатки использования Generics с коллекциями
+
+1. **Ограниченная совместимость**: Обобщённые типы не поддерживаются в массивах и некоторых других контекстах.
+2. **Type Erasure**: Информация о типах теряется во время компиляции, что может ограничивать некоторые возможности обобщений.
+3. **Сложность синтаксиса**: Для новичков синтаксис обобщений может быть сложным и запутанным.
+
+### Дополнительные примеры
+
+#### Пример 8: Использование wildcard с ограничением
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class BoundedWildcardExample {
+    // Метод, принимающий список чисел (Integer, Double, Float и т.д.)
+    public static double sumOfList(List<? extends Number> list) {
+        double sum = 0.0;
+        for (Number num : list) {
+            sum += num.doubleValue();
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        List<Integer> intList = new ArrayList<>();
+        intList.add(1);
+        intList.add(2);
+        intList.add(3);
+
+        List<Double> doubleList = new ArrayList<>();
+        doubleList.add(1.1);
+        doubleList.add(2.2);
+        doubleList.add(3.3);
+
+        System.out.println("Sum of integers: " + sumOfList(intList));   // Output: 6.0
+        System.out.println("Sum of doubles: " + sumOfList(doubleList)); // Output: 6.6
+    }
+}
+```
+
+#### Пример 9: Использование wildcard с нижней границей
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class LowerBoundedWildcardExample {
+    // Метод, принимающий список, который может содержать объекты типа Integer и его супертипы
+    public static void addNumbers(List<? super Integer> list) {
+        for (int i = 1; i <= 10; i++) {
+            list.add(i);
+        }
+    }
+
+    public static void main(String[] args) {
+        List<Integer> intList = new ArrayList<>();
+        addNumbers(intList);
+        System.out.println(intList); // Output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+        List<Number> numberList = new ArrayList<>();
+        addNumbers(numberList);
+        System.out.println(numberList); // Output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    }
+}
+```
+
 ## 104. Параметризованные методы. Понятие параметризованных методов в Java. Как они позволяют работать с любыми типами данных? Примеры реализации методов с обобщенными параметрами и их вызова.
 ## 105. Generics в Java. Типовые ограничения в Generics. Как задать ограничения на параметры типов с помощью ключевых слов extends и super? Примеры их использования для обеспечения гибкости и безопасности обобщений.
 ## 106. Обобщенные интерфейсы. Использование Generics для создания универсальных интерфейсов. Примеры реализации обобщенных интерфейсов и их применения в реальных задачах.
