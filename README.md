@@ -4289,6 +4289,187 @@ public class TableGridLayoutExample {
 ```
 
 ## 94. Менеджер BoxLayout. Как компоненты размещаются по горизонтали или вертикали с помощью BoxLayout? Примеры последовательного расположения элементов.
+### Менеджер BoxLayout
+
+**BoxLayout** — это менеджер компоновки в Java Swing, который позволяет размещать компоненты последовательно по горизонтали или вертикали. Он предоставляет гибкость для создания интерфейсов, где компоненты должны быть организованы в линию (горизонтально или вертикально), с возможностью задания различных параметров выравнивания и промежутков между компонентами.
+
+### Как компоненты размещаются с помощью BoxLayout
+
+1. **Последовательное размещение**: Компоненты добавляются последовательно вдоль выбранной оси (горизонтальной или вертикальной).
+2. **Выравнивание**: Можно задать выравнивание компонентов относительно контейнера (по горизонтали или вертикали).
+3. **Промежутки между компонентами**: Можно задать промежутки между компонентами с помощью специальных методов или класса `Box.create*Glue()`.
+
+### Конструкторы и методы BoxLayout
+
+- **Конструкторы**:
+  - `BoxLayout(Container target, int axis)`: Создает макет для указанного контейнера и оси (`BoxLayout.X_AXIS` для горизонтального размещения, `BoxLayout.Y_AXIS` для вертикального размещения).
+
+- **Методы**:
+  - `setAlignmentX(float alignmentX)`: Устанавливает выравнивание по горизонтали.
+  - `setAlignmentY(float alignmentY)`: Устанавливает выравнивание по вертикали.
+  - `Box.createHorizontalGlue()`: Создает "прокладку" для горизонтального распределения пространства.
+  - `Box.createVerticalGlue()`: Создает "прокладку" для вертикального распределения пространства.
+  - `Box.createRigidArea(Dimension d)`: Создает область фиксированного размера для задания промежутков.
+
+### Примеры последовательного расположения элементов
+
+#### Пример 1: Горизонтальное размещение компонентов
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class HorizontalBoxLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Horizontal BoxLayout Example");
+        frame.setSize(400, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки BoxLayout
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS)); // Горизонтальная ось
+
+        // Добавляем кнопки на панель
+        panel.add(new JButton("Button 1"));
+        panel.add(Box.createRigidArea(new Dimension(10, 0))); // Промежуток между кнопками
+        panel.add(new JButton("Button 2"));
+        panel.add(Box.createRigidArea(new Dimension(10, 0))); // Промежуток между кнопками
+        panel.add(new JButton("Button 3"));
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 2: Вертикальное размещение компонентов
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class VerticalBoxLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Vertical BoxLayout Example");
+        frame.setSize(200, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки BoxLayout
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // Вертикальная ось
+
+        // Добавляем кнопки на панель
+        panel.add(new JButton("Button 1"));
+        panel.add(Box.createRigidArea(new Dimension(0, 10))); // Промежуток между кнопками
+        panel.add(new JButton("Button 2"));
+        panel.add(Box.createRigidArea(new Dimension(0, 10))); // Промежуток между кнопками
+        panel.add(new JButton("Button 3"));
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 3: Использование Box.createHorizontalGlue() и Box.createVerticalGlue()
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class GlueBoxLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Glue BoxLayout Example");
+        frame.setSize(400, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки BoxLayout
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS)); // Горизонтальная ось
+
+        // Добавляем кнопки и "прокладки"
+        panel.add(Box.createHorizontalGlue()); // Распределение свободного пространства слева
+        panel.add(new JButton("Button 1"));
+        panel.add(Box.createRigidArea(new Dimension(10, 0))); // Промежуток между кнопками
+        panel.add(new JButton("Button 2"));
+        panel.add(Box.createRigidArea(new Dimension(10, 0))); // Промежуток между кнопками
+        panel.add(new JButton("Button 3"));
+        panel.add(Box.createHorizontalGlue()); // Распределение свободного пространства справа
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 4: Сложная структура с использованием BoxLayout
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class ComplexBoxLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Complex BoxLayout Example");
+        frame.setSize(400, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем основную панель и устанавливаем менеджер компоновки BorderLayout
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+
+        // Создаем верхнюю панель (NORTH)
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
+        topPanel.add(new JLabel("Header Panel"));
+        topPanel.add(Box.createHorizontalGlue());
+
+        // Создаем центральную панель (CENTER)
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+
+        centerPanel.add(new JLabel("Label 1"));
+        centerPanel.add(new JTextField(20));
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        centerPanel.add(new JLabel("Label 2"));
+        centerPanel.add(new JTextField(20));
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        centerPanel.add(new JButton("Submit"));
+
+        // Создаем нижнюю панель (SOUTH)
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
+        bottomPanel.add(Box.createHorizontalGlue());
+        bottomPanel.add(new JButton("Cancel"));
+
+        // Добавляем панели на основную панель в соответствующие области BorderLayout
+        mainPanel.add(topPanel, BorderLayout.NORTH);
+        mainPanel.add(centerPanel, BorderLayout.CENTER);
+        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
+
+        // Добавляем основную панель в окно
+        frame.add(mainPanel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+
 ## 95. Границы в Swing. Как использовать границы для улучшения внешнего вида интерфейса? Примеры применения границ.
 ## 96. GUI и сбытийная модель в Java. Что такое событийная модель, и как она используется для взаимодействия компонентов через события? Основные элементы событийной модели.
 ## 97. Обработка событий в Java. Как источник события, слушатель и обработчик взаимодействуют в событийной модели? Примеры добавления слушателей событий. Модель делегирования событий. Как работает модель делегирования событий? 
