@@ -4108,6 +4108,186 @@ It seems there was an error in the XML formatting due to the inclusion of non-XM
 ```
 
 ## 93. Менеджер GridLayout. Как компоненты размещаются в сетке с использованием GridLayout? Примеры создания таблиц или форм.
+
+### Менеджер GridLayout
+
+**GridLayout** — это менеджер компоновки в Java Swing, который размещает компоненты в сетке фиксированного размера. Каждый компонент занимает одну ячейку сетки, и все ячейки имеют одинаковый размер. Это позволяет создавать интерфейсы, организованные в виде таблиц или форм.
+
+### Как компоненты размещаются в сетке с использованием GridLayout
+
+1. **Размер сетки**: Сетка определяется количеством строк и столбцов.
+2. **Размер ячеек**: Все ячейки имеют одинаковый размер, который автоматически рассчитывается на основе доступного пространства контейнера.
+3. **Порядок размещения**: Компоненты добавляются последовательно, начиная с верхнего левого угла и двигаясь слева направо и сверху вниз.
+
+### Конструкторы и методы GridLayout
+
+- **Конструкторы**:
+  - `GridLayout()`: Создает макет с одной строкой и одним столбцом.
+  - `GridLayout(int rows, int cols)`: Создает макет с указанным количеством строк и столбцов.
+  - `GridLayout(int rows, int cols, int hgap, int vgap)`: Создает макет с указанным количеством строк и столбцов и заданными горизонтальными и вертикальными промежутками между ячейками.
+
+- **Методы**:
+  - `setRows(int rows)`: Устанавливает количество строк.
+  - `setColumns(int cols)`: Устанавливает количество столбцов.
+  - `setHgap(int hgap)`: Устанавливает горизонтальный промежуток между ячейками.
+  - `setVgap(int vgap)`: Устанавливает вертикальный промежуток между ячейками.
+  - `getRows()`, `getColumns()`, `getHgap()`, `getVgap()`: Получают текущие значения параметров макета.
+
+### Примеры создания таблиц или форм
+
+#### Пример 1: Базовый GridLayout
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class BasicGridLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Basic GridLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки GridLayout
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 2)); // 3 строки и 2 столбца
+
+        // Добавляем кнопки на панель
+        panel.add(new JButton("Button 1"));
+        panel.add(new JButton("Button 2"));
+        panel.add(new JButton("Button 3"));
+        panel.add(new JButton("Button 4"));
+        panel.add(new JButton("Button 5"));
+        panel.add(new JButton("Button 6"));
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 2: Создание простой формы с использованием GridLayout
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class SimpleFormGridLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Simple Form GridLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки GridLayout
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(4, 2)); // 4 строки и 2 столбца
+
+        // Добавляем метки и текстовые поля на панель
+        panel.add(new JLabel("Name:"));
+        JTextField nameField = new JTextField();
+        panel.add(nameField);
+
+        panel.add(new JLabel("Email:"));
+        JTextField emailField = new JTextField();
+        panel.add(emailField);
+
+        panel.add(new JLabel("Password:"));
+        JPasswordField passwordField = new JPasswordField();
+        panel.add(passwordField);
+
+        panel.add(new JLabel("Confirm Password:"));
+        JPasswordField confirmPasswordField = new JPasswordField();
+        panel.add(confirmPasswordField);
+
+        // Добавляем кнопку Submit
+        JButton submitButton = new JButton("Submit");
+        panel.add(submitButton);
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 3: Использование промежутков между ячейками
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class GapGridLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Gap GridLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки GridLayout с заданными промежутками
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 2, 10, 10)); // 3 строки, 2 столбца, горизонтальный промежуток 10 пикселей, вертикальный промежуток 10 пикселей
+
+        // Добавляем кнопки на панель
+        panel.add(new JButton("Button 1"));
+        panel.add(new JButton("Button 2"));
+        panel.add(new JButton("Button 3"));
+        panel.add(new JButton("Button 4"));
+        panel.add(new JButton("Button 5"));
+        panel.add(new JButton("Button 6"));
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 4: Создание таблицы с использованием GridLayout
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class TableGridLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Table GridLayout Example");
+        frame.setSize(600, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки GridLayout
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(5, 3)); // 5 строк и 3 столбца
+
+        // Добавляем заголовки таблицы
+        panel.add(new JLabel("Header 1", SwingConstants.CENTER));
+        panel.add(new JLabel("Header 2", SwingConstants.CENTER));
+        panel.add(new JLabel("Header 3", SwingConstants.CENTER));
+
+        // Добавляем данные таблицы
+        for (int i = 1; i <= 4; i++) {
+            panel.add(new JLabel("Row " + i + " Col 1", SwingConstants.CENTER));
+            panel.add(new JLabel("Row " + i + " Col 2", SwingConstants.CENTER));
+            panel.add(new JLabel("Row " + i + " Col 3", SwingConstants.CENTER));
+        }
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
 ## 94. Менеджер BoxLayout. Как компоненты размещаются по горизонтали или вертикали с помощью BoxLayout? Примеры последовательного расположения элементов.
 ## 95. Границы в Swing. Как использовать границы для улучшения внешнего вида интерфейса? Примеры применения границ.
 ## 96. GUI и сбытийная модель в Java. Что такое событийная модель, и как она используется для взаимодействия компонентов через события? Основные элементы событийной модели.
