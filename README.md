@@ -2441,9 +2441,826 @@ public class BorderLayoutAWTExample {
 ```
 
 ## 84. Swing в Java. Как Swing расширяет возможности AWT? Примеры создания интерфейсов с использованием Swing. Паттерн MVC в Swing. Как Swing реализует модель MVC (Model-View-Controller)? Примеры разделения логики, представления и управления в интерфейсе.
+### Swing в Java
+
+**Swing** — это набор компонентов для создания графических пользовательских интерфейсов (GUI) в Java, который является частью библиотеки **Java Foundation Classes (JFC)**. Swing расширяет возможности AWT и предоставляет более мощные и гибкие инструменты для разработки GUI.
+
+### Как Swing расширяет возможности AWT?
+
+1. **Платформонезависимость**: Компоненты Swing реализованы полностью на Java и не зависят от нативных компонентов операционной системы.
+2. **Богатый набор компонентов**: Swing предлагает широкий спектр компонентов, таких как `JButton`, `JLabel`, `JTextField`, `JTable`, `JTree` и многие другие.
+3. **Кастомизация**: Компоненты Swing легко кастомизировать с помощью различных методов и классов.
+4. **Поддержка плагинов и тем**: Swing поддерживает различные темы и стили для интерфейса.
+5. **Модель-Представление-Контроллер (MVC)**: Swing использует паттерн MVC для разделения логики, представления и управления.
+
+### Примеры создания интерфейсов с использованием Swing
+
+#### Пример 1: Простое окно с кнопкой
+
+```java
+import javax.swing.*;
+import java.awt.event.*;
+
+public class SimpleSwingExample {
+    public static void main(String[] args) {
+        // Создаем основное окно (контейнер)
+        JFrame frame = new JFrame("Simple Swing Example");
+
+        // Создаем кнопку
+        JButton button = new JButton("Click Me");
+
+        // Добавляем кнопку в контейнер
+        frame.add(button);
+
+        // Устанавливаем размер окна
+        frame.setSize(300, 200);
+
+        // Устанавливаем макет (по умолчанию BorderLayout)
+        frame.setLayout(new FlowLayout());
+
+        // Закрытие окна при нажатии на "X"
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+
+        // Обработчик события для кнопки
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Button Clicked!");
+            }
+        });
+    }
+}
+```
+
+#### Пример 2: Окно с меткой и текстовым полем
+
+```java
+import javax.swing.*;
+import java.awt.event.*;
+
+public class LabelTextFieldSwingExample {
+    public static void main(String[] args) {
+        // Создаем основное окно (контейнер)
+        JFrame frame = new JFrame("Label and TextField Example");
+
+        // Создаем метку и текстовое поле
+        JLabel label = new JLabel("Enter your name:");
+        JTextField textField = new JTextField(20);
+
+        // Создаем кнопку
+        JButton button = new JButton("Submit");
+
+        // Добавляем компоненты в контейнер
+        frame.add(label);
+        frame.add(textField);
+        frame.add(button);
+
+        // Устанавливаем размер окна
+        frame.setSize(300, 200);
+
+        // Устанавливаем макет (по умолчанию FlowLayout)
+        frame.setLayout(new FlowLayout());
+
+        // Закрытие окна при нажатии на "X"
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+
+        // Обработчик события для кнопки
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String name = textField.getText();
+                JOptionPane.showMessageDialog(frame, "Name entered: " + name);
+            }
+        });
+    }
+}
+```
+
+### Паттерн MVC в Swing
+
+**MVC (Model-View-Controller)** — это архитектурный паттерн, который разделяет приложение на три взаимодействующих компонента:
+
+1. **Model (Модель)**: Содержит бизнес-логику и данные приложения.
+2. **View (Представление)**: Отвечает за отображение данных и взаимодействие с пользователем.
+3. **Controller (Контроллер)**: Обрабатывает пользовательский ввод и управляет обновлением модели и представления.
+
+### Как Swing реализует модель MVC
+
+Swing использует паттерн MVC для разделения логики, представления и управления. В Swing:
+
+- **Model**: Представляет данные и бизнес-логику. Например, `TableModel` для `JTable`, `ListModel` для `JList`.
+- **View**: Представляет компоненты пользовательского интерфейса, такие как `JButton`, `JLabel`, `JTextField`.
+- **Controller**: Реализуется через обработчики событий (`ActionListener`, `MouseListener`, и т.д.).
+
+### Пример разделения логики, представления и управления в интерфейсе
+
+Рассмотрим пример простого приложения, которое позволяет пользователю ввести имя и выводит приветственное сообщение.
+
+#### Model (Модель)
+
+```java
+public class GreetingModel {
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getGreeting() {
+        return "Hello, " + name + "!";
+    }
+}
+```
+
+#### View (Представление)
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class GreetingView extends JFrame {
+    private JLabel label;
+    private JTextField textField;
+    private JButton button;
+    private JTextArea greetingArea;
+
+    public GreetingView() {
+        setTitle("Greeting Application");
+        setSize(400, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+
+        label = new JLabel("Enter your name:");
+        textField = new JTextField(20);
+        button = new JButton("Submit");
+        greetingArea = new JTextArea(5, 20);
+        greetingArea.setEditable(false);
+
+        add(label);
+        add(textField);
+        add(button);
+        add(new JScrollPane(greetingArea));
+
+        setVisible(true);
+    }
+
+    public String getUserName() {
+        return textField.getText();
+    }
+
+    public void setGreeting(String greeting) {
+        greetingArea.setText(greeting);
+    }
+
+    public void addSubmitListener(ActionListener listener) {
+        button.addActionListener(listener);
+    }
+}
+```
+
+#### Controller (Контроллер)
+
+```java
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class GreetingController {
+    private GreetingModel model;
+    private GreetingView view;
+
+    public GreetingController(GreetingModel model, GreetingView view) {
+        this.model = model;
+        this.view = view;
+
+        view.addSubmitListener(new SubmitListener());
+    }
+
+    class SubmitListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            String userName = view.getUserName();
+            model.setName(userName);
+            String greeting = model.getGreeting();
+            view.setGreeting(greeting);
+        }
+    }
+
+    public static void main(String[] args) {
+        GreetingModel model = new GreetingModel();
+        GreetingView view = new GreetingView();
+        new GreetingController(model, view);
+    }
+}
+```
+
 ## 85. Структура GUI в Java. Основные компоненты GUI в Swing: контейнеры (JFrame, JPanel, JDialog), компоненты (JButton, JLabel, JTextField) и менеджеры компоновки. 
+### Структура GUI в Java
+
+Структура графического пользовательского интерфейса (GUI) в Java, особенно при использовании Swing, состоит из нескольких ключевых элементов:
+
+1. **Контейнеры (Containers)**: Это элементы, которые могут содержать другие компоненты и контейнеры. Основные контейнеры в Swing — это `JFrame`, `JPanel`, `JDialog`.
+2. **Компоненты (Components)**: Это базовые элементы интерфейса, такие как кнопки (`JButton`), метки (`JLabel`), текстовые поля (`JTextField`) и т.д.
+3. **Менеджеры компоновки (Layout Managers)**: Они определяют, как компоненты располагаются внутри контейнеров.
+
+### Основные компоненты GUI в Swing
+
+#### Контейнеры
+
+1. **JFrame**: Основное окно приложения.
+2. **JPanel**: Панель, которая может содержать другие компоненты и контейнеры.
+3. **JDialog**: Диалоговое окно для взаимодействия с пользователем.
+
+#### Компоненты
+
+1. **JButton**: Кнопка.
+2. **JLabel**: Метка для отображения текста или изображений.
+3. **JTextField**: Однострочное текстовое поле.
+4. **JTextArea**: Многострочное текстовое поле.
+5. **JCheckBox**: Чекбокс.
+6. **JRadioButton**: Радиокнопка.
+7. **JList**: Список элементов.
+8. **JComboBox**: Выпадающий список.
+9. **JTable**: Таблица для отображения данных в сетке.
+
+#### Менеджеры компоновки
+
+1. **FlowLayout**: Компоненты располагаются последовательно слева направо и сверху вниз.
+2. **BorderLayout**: Разделение контейнера на пять областей: север, юг, запад, восток и центр.
+3. **GridLayout**: Разделение контейнера на сетку фиксированного размера.
+4. **GridBagLayout**: Более гибкий макет, позволяющий задавать различные параметры для каждого компонента.
+5. **BoxLayout**: Расположение компонентов вертикально или горизонтально.
+
+### Примеры использования основных компонентов и контейнеров
+
+#### Пример 1: JFrame и JPanel
+
+```java
+import javax.swing.*;
+
+public class JFrameAndJPanelExample {
+    public static void main(String[] args) {
+        // Создаем основное окно (контейнер)
+        JFrame frame = new JFrame("JFrame and JPanel Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+
+        // Добавляем компоненты на панель
+        JButton button = new JButton("Click Me");
+        JLabel label = new JLabel("This is a label");
+        JTextField textField = new JTextField(20);
+
+        panel.add(button);
+        panel.add(label);
+        panel.add(textField);
+
+        // Добавляем панель в основное окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 2: JButton и JLabel
+
+```java
+import javax.swing.*;
+import java.awt.event.*;
+
+public class JButtonAndJLabelExample {
+    public static void main(String[] args) {
+        // Создаем основное окно (контейнер)
+        JFrame frame = new JFrame("JButton and JLabel Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем метку и кнопку
+        JLabel label = new JLabel("Press the button:");
+        JButton button = new JButton("Click Me");
+
+        // Добавляем компоненты в окно
+        frame.add(label);
+        frame.add(button);
+
+        // Устанавливаем макет (по умолчанию BorderLayout)
+        frame.setLayout(new FlowLayout());
+
+        // Обработчик события для кнопки
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                label.setText("Button Clicked!");
+            }
+        });
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 3: JTextField и JTextArea
+
+```java
+import javax.swing.*;
+import java.awt.event.*;
+
+public class JTextFieldAndJTextAreaExample {
+    public static void main(String[] args) {
+        // Создаем основное окно (контейнер)
+        JFrame frame = new JFrame("JTextField and JTextArea Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем метку, текстовое поле и многострочное текстовое поле
+        JLabel label = new JLabel("Enter your text:");
+        JTextField textField = new JTextField(20);
+        JTextArea textArea = new JTextArea(10, 20);
+        textArea.setEditable(false);
+
+        // Создаем кнопку
+        JButton button = new JButton("Submit");
+
+        // Добавляем компоненты в окно
+        frame.add(label);
+        frame.add(textField);
+        frame.add(button);
+        frame.add(new JScrollPane(textArea));
+
+        // Устанавливаем макет (по умолчанию BorderLayout)
+        frame.setLayout(new FlowLayout());
+
+        // Обработчик события для кнопки
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String text = textField.getText();
+                textArea.setText("You entered: " + text);
+            }
+        });
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 4: JCheckBox и JRadioButton
+
+```java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class CheckBoxAndRadioButtonExample {
+    public static void main(String[] args) {
+        // Создаем основное окно (контейнер)
+        JFrame frame = new JFrame("CheckBox and RadioButton Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 1));
+
+        // Создаем чекбоксы и радиокнопки
+        JCheckBox checkBox = new JCheckBox("Check me");
+        JRadioButton radioButton1 = new JRadioButton("Option 1");
+        JRadioButton radioButton2 = new JRadioButton("Option 2");
+
+        // Группируем радиокнопки
+        ButtonGroup buttonGroup = new ButtonGroup();
+        buttonGroup.add(radioButton1);
+        buttonGroup.add(radioButton2);
+
+        // Добавляем компоненты на панель
+        panel.add(checkBox);
+        panel.add(radioButton1);
+        panel.add(radioButton2);
+
+        // Добавляем панель в основное окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 5: Использование менеджеров компоновки
+
+##### Пример с FlowLayout
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class FlowLayoutExample {
+    public static void main(String[] args) {
+        // Создаем основное окно (контейнер)
+        JFrame frame = new JFrame("FlowLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем макет FlowLayout
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+
+        // Добавляем компоненты на панель
+        JButton button1 = new JButton("Button 1");
+        JButton button2 = new JButton("Button 2");
+        JButton button3 = new JButton("Button 3");
+
+        panel.add(button1);
+        panel.add(button2);
+        panel.add(button3);
+
+        // Добавляем панель в основное окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+##### Пример с BorderLayout
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class BorderLayoutExample {
+    public static void main(String[] args) {
+        // Создаем основное окно (контейнер)
+        JFrame frame = new JFrame("BorderLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем кнопки
+        JButton northButton = new JButton("North");
+        JButton southButton = new JButton("South");
+        JButton eastButton = new JButton("East");
+        JButton westButton = new JButton("West");
+        JButton centerButton = new JButton("Center");
+
+        // Добавляем кнопки в контейнер с указанием области BorderLayout
+        frame.add(northButton, BorderLayout.NORTH);
+        frame.add(southButton, BorderLayout.SOUTH);
+        frame.add(eastButton, BorderLayout.EAST);
+        frame.add(westButton, BorderLayout.WEST);
+        frame.add(centerButton, BorderLayout.CENTER);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+
 ## 86. Класс JFrame. Что такое окно JFrame, и как использовать его для создания графического интерфейса? Примеры добавления элементов через метод getContentPane().
+### Класс JFrame
+
+**JFrame** — это основной контейнер для создания окон в Swing. Он представляет собой главное окно приложения, которое может содержать другие компоненты и контейнеры. `JFrame` предоставляет множество методов для настройки и управления окном, таких как установка размера, заголовка, обработки событий закрытия окна и добавления компонентов.
+
+### Как использовать JFrame для создания графического интерфейса
+
+Для создания графического интерфейса с использованием `JFrame`, необходимо выполнить следующие шаги:
+
+1. **Создание экземпляра JFrame**: Создайте новый объект `JFrame`.
+2. **Настройка основных параметров окна**: Установите заголовок, размеры и поведение при закрытии.
+3. **Добавление компонентов**: Используйте метод `getContentPane()` для получения контента окна и добавления компонентов.
+4. **Отображение окна**: Вызовите метод `setVisible(true)` для отображения окна.
+
+### Примеры добавления элементов через метод getContentPane()
+
+#### Пример 1: Простое окно с кнопкой
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class SimpleJFrameExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Simple JFrame Example");
+
+        // Устанавливаем размер окна
+        frame.setSize(400, 300);
+
+        // Устанавливаем поведение при закрытии окна
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем кнопку
+        JButton button = new JButton("Click Me");
+
+        // Получаем контент панель и добавляем кнопку
+        Container contentPane = frame.getContentPane();
+        contentPane.add(button);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 2: Окно с меткой и текстовым полем
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class LabelTextFieldJFrameExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Label and TextField Example");
+
+        // Устанавливаем размер окна
+        frame.setSize(400, 300);
+
+        // Устанавливаем поведение при закрытии окна
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем метку и текстовое поле
+        JLabel label = new JLabel("Enter your name:");
+        JTextField textField = new JTextField(20);
+
+        // Создаем кнопку
+        JButton button = new JButton("Submit");
+
+        // Получаем контент панель и устанавливаем макет
+        Container contentPane = frame.getContentPane();
+        contentPane.setLayout(new FlowLayout());
+
+        // Добавляем компоненты на контент панель
+        contentPane.add(label);
+        contentPane.add(textField);
+        contentPane.add(button);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 3: Использование JPanel внутри JFrame
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class PanelInJFrameExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Panel in JFrame Example");
+
+        // Устанавливаем размер окна
+        frame.setSize(400, 300);
+
+        // Устанавливаем поведение при закрытии окна
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 1));
+
+        // Создаем метку, текстовое поле и кнопку
+        JLabel label = new JLabel("Enter your name:");
+        JTextField textField = new JTextField(20);
+        JButton button = new JButton("Submit");
+
+        // Добавляем компоненты на панель
+        panel.add(label);
+        panel.add(textField);
+        panel.add(button);
+
+        // Добавляем панель в контент панель JFrame
+        Container contentPane = frame.getContentPane();
+        contentPane.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 4: Обработка событий кнопки
+
+```java
+import javax.swing.*;
+import java.awt.event.*;
+
+public class ButtonActionJFrameExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Button Action Example");
+
+        // Устанавливаем размер окна
+        frame.setSize(400, 300);
+
+        // Устанавливаем поведение при закрытии окна
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем метку и текстовое поле
+        JLabel label = new JLabel("Enter your name:");
+        JTextField textField = new JTextField(20);
+
+        // Создаем кнопку
+        JButton button = new JButton("Submit");
+
+        // Обработчик события для кнопки
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String name = textField.getText();
+                JOptionPane.showMessageDialog(frame, "Name entered: " + name);
+            }
+        });
+
+        // Получаем контент панель и устанавливаем макет
+        Container contentPane = frame.getContentPane();
+        contentPane.setLayout(new FlowLayout());
+
+        // Добавляем компоненты на контент панель
+        contentPane.add(label);
+        contentPane.add(textField);
+        contentPane.add(button);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
 ## 87. Класс JPanel. Как панель JPanel используется для группировки и управления компонентами? Примеры изменения менеджера компоновки с помощью метода setLayout().
+### Класс JPanel
+
+**JPanel** — это легковесный контейнер в библиотеке Swing, который используется для группировки и управления компонентами. Панель `JPanel` может содержать другие компоненты и контейнеры, что позволяет организовать интерфейс приложения более структурированно и гибко. 
+
+### Как панель JPanel используется для группировки и управления компонентами
+
+1. **Группировка компонентов**: `JPanel` позволяет объединять несколько компонентов в одну логическую группу, что упрощает управление и манипуляции с этими компонентами.
+2. **Изменение менеджера компоновки**: На каждой панели можно установить свой менеджер компоновки (`LayoutManager`), что позволяет контролировать расположение компонентов внутри панели.
+3. **Наследование и кастомизация**: Можно создавать собственные классы, наследующие от `JPanel`, для добавления специфической логики или кастомизации внешнего вида.
+
+### Примеры изменения менеджера компоновки с помощью метода setLayout()
+
+#### Пример 1: Использование FlowLayout
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class FlowLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("FlowLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки FlowLayout
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+
+        // Добавляем кнопки на панель
+        panel.add(new JButton("Button 1"));
+        panel.add(new JButton("Button 2"));
+        panel.add(new JButton("Button 3"));
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 2: Использование BorderLayout
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class BorderLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("BorderLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки BorderLayout
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        // Добавляем кнопки на панель в различные области BorderLayout
+        panel.add(new JButton("North"), BorderLayout.NORTH);
+        panel.add(new JButton("South"), BorderLayout.SOUTH);
+        panel.add(new JButton("East"), BorderLayout.EAST);
+        panel.add(new JButton("West"), BorderLayout.WEST);
+        panel.add(new JButton("Center"), BorderLayout.CENTER);
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 3: Использование GridLayout
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class GridLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("GridLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки GridLayout
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 2)); // 3 строки и 2 столбца
+
+        // Добавляем кнопки на панель
+        panel.add(new JButton("Button 1"));
+        panel.add(new JButton("Button 2"));
+        panel.add(new JButton("Button 3"));
+        panel.add(new JButton("Button 4"));
+        panel.add(new JButton("Button 5"));
+        panel.add(new JButton("Button 6"));
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 4: Использование GridBagLayout
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class GridBagLayoutExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("GridBagLayout Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и устанавливаем менеджер компоновки GridBagLayout
+        JPanel panel = new JPanel();
+        GridBagLayout layout = new GridBagLayout();
+        panel.setLayout(layout);
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        // Устанавливаем параметры для первой кнопки
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        panel.add(new JButton("Button 1"), gbc);
+
+        // Устанавливаем параметры для второй кнопки
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        panel.add(new JButton("Button 2"), gbc);
+
+        // Устанавливаем параметры для третьей кнопки
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2; // Эта кнопка занимает две колонки
+        panel.add(new JButton("Button 3"), gbc);
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
 ## 88. Менеджеры компоновки в Java. Роль менеджеров компоновки в управлении размещением компонентов. Примеры использования менеджеров FlowLayout, BorderLayout, GridLayout.
 ## 89. Менеджер FlowLayout. Как работает FlowLayout? Примеры настройки выравнивания и промежутков между компонентами.
 ## 90. Менеджеры компоновки в Java. Роль менеджеров компоновки в управлении размещением компонентов. Примеры использования менеджеров FlowLayout, BorderLayout, GridLayout.
