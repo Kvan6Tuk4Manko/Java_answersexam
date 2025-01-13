@@ -6025,6 +6025,277 @@ public class GenericSwap {
 ```
 
 ## 102. Generics в Java. Реализация обобщенного программирования через Generics. Основные синтаксические конструкции: параметры типов, обобщенные классы и методы. Примеры работы с параметризованными классами и методами. Примущества и недостатки Generics.
+### Generics в Java
+
+**Generics** (обобщения) в Java позволяют создавать классы, интерфейсы и методы, которые могут работать с различными типами данных без потери типобезопасности. Это делает код более универсальным и повторно используемым, а также уменьшает необходимость приведения типов.
+
+### Основные синтаксические конструкции
+
+1. **Параметры типов**: Обобщённые классы и методы используют параметры типов для указания типа данных, с которым они будут работать.
+2. **Обобщённые классы**: Классы, которые могут принимать один или несколько параметров типов.
+3. **Обобщённые методы**: Методы, которые могут принимать параметры типов независимо от того, обобщён ли их класс.
+
+### Примеры работы с параметризованными классами и методами
+
+#### Пример 1: Обобщённый класс
+
+```java
+public class Box<T> {
+    private T content;
+
+    public void setContent(T content) {
+        this.content = content;
+    }
+
+    public T getContent() {
+        return content;
+    }
+
+    public static void main(String[] args) {
+        Box<Integer> integerBox = new Box<>();
+        integerBox.setContent(10);
+        System.out.println("Integer box content: " + integerBox.getContent());
+
+        Box<String> stringBox = new Box<>();
+        stringBox.setContent("Hello");
+        System.out.println("String box content: " + stringBox.getContent());
+    }
+}
+```
+
+#### Пример 2: Обобщённый метод
+
+```java
+public class GenericMethodExample {
+
+    public static <T> void printArray(T[] array) {
+        for (T element : array) {
+            System.out.println(element);
+        }
+    }
+
+    public static void main(String[] args) {
+        Integer[] intArray = {1, 2, 3, 4, 5};
+        String[] stringArray = {"apple", "banana", "cherry"};
+
+        printArray(intArray);   // Output: 1, 2, 3, 4, 5
+        printArray(stringArray); // Output: apple, banana, cherry
+    }
+}
+```
+
+#### Пример 3: Ограничение типов
+
+Ограничение типов позволяет указать, что обобщённый тип должен быть подклассом определённого класса или реализовать определённый интерфейс.
+
+```java
+public class BoundedTypeExample {
+
+    public static <T extends Number> double sum(T[] array) {
+        double sum = 0.0;
+        for (T element : array) {
+            sum += element.doubleValue();
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        Integer[] intArray = {1, 2, 3, 4, 5};
+        Double[] doubleArray = {1.1, 2.2, 3.3, 4.4, 5.5};
+
+        System.out.println("Sum of integers: " + sum(intArray));   // Output: 15.0
+        System.out.println("Sum of doubles: " + sum(doubleArray)); // Output: 16.5
+    }
+}
+```
+
+#### Пример 4: Использование нескольких параметров типов
+
+```java
+public class Pair<K, V> {
+    private K key;
+    private V value;
+
+    public Pair(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    public K getKey() {
+        return key;
+    }
+
+    public void setKey(K key) {
+        this.key = key;
+    }
+
+    public V getValue() {
+        return value;
+    }
+
+    public void setValue(V value) {
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + key + ", " + value + ")";
+    }
+
+    public static void main(String[] args) {
+        Pair<String, Integer> pair1 = new Pair<>("Age", 30);
+        Pair<Double, String> pair2 = new Pair<>(3.14, "Pi");
+
+        System.out.println(pair1); // Output: (Age, 30)
+        System.out.println(pair2); // Output: (3.14, Pi)
+
+        pair1.setValue(31);
+        pair2.setKey(2.71);
+
+        System.out.println(pair1); // Output: (Age, 31)
+        System.out.println(pair2); // Output: (2.71, Pi)
+    }
+}
+```
+
+#### Пример 5: Использование wildcard (?)
+
+Wildcard `?` используется для обозначения неизвестного типа.
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class WildcardExample {
+
+    public static void printList(List<?> list) {
+        for (Object elem : list) {
+            System.out.print(elem + " ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        List<Integer> intList = new ArrayList<>();
+        intList.add(1);
+        intList.add(2);
+
+        List<String> strList = new ArrayList<>();
+        strList.add("Hello");
+        strList.add("World");
+
+        printList(intList); // Output: 1 2 
+        printList(strList); // Output: Hello World 
+    }
+}
+```
+
+### Преимущества Generics
+
+1. **Типобезопасность**: Компилятор проверяет типы во время компиляции, что снижает вероятность ошибок времени выполнения.
+2. **Универсальность**: Обобщённые классы и методы могут работать с любыми типами данных.
+3. **Чистота кода**: Уменьшение необходимости в явном приведении типов делает код более читаемым и поддерживаемым.
+4. **Повторное использование кода**: Одна и та же структура данных или алгоритм может использоваться для различных типов данных.
+
+### Недостатки Generics
+
+1. **Сложность синтаксиса**: Для новичков синтаксис обобщений может показаться сложным и запутанным.
+2. **Ограниченная совместимость**: Обобщённые типы не поддерживаются в массивах и некоторых других контекстах.
+3. **Типы-заглушки (Type Erasure)**: В процессе компиляции информация о типах теряется, что может вызвать некоторые ограничения при работе с обобщениями (например, невозможность создания экземпляра обобщённого типа).
+
+### Дополнительные примеры
+
+#### Пример 6: Использование wildcard с ограничением
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class WildcardWithBoundsExample {
+
+    public static double sumOfList(List<? extends Number> list) {
+        double sum = 0.0;
+        for (Number num : list) {
+            sum += num.doubleValue();
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        List<Integer> intList = new ArrayList<>();
+        intList.add(1);
+        intList.add(2);
+        intList.add(3);
+
+        List<Double> doubleList = new ArrayList<>();
+        doubleList.add(1.1);
+        doubleList.add(2.2);
+        doubleList.add(3.3);
+
+        System.out.println("Sum of integers: " + sumOfList(intList));   // Output: 6.0
+        System.out.println("Sum of doubles: " + sumOfList(doubleList)); // Output: 6.6
+    }
+}
+```
+
+#### Пример 7: Использование wildcard с нижней границей
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class LowerBoundedWildcardExample {
+
+    public static void addNumbers(List<? super Integer> list) {
+        for (int i = 1; i <= 10; i++) {
+            list.add(i);
+        }
+    }
+
+    public static void main(String[] args) {
+        List<Integer> intList = new ArrayList<>();
+        addNumbers(intList);
+        System.out.println(intList); // Output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+        List<Number> numberList = new ArrayList<>();
+        addNumbers(numberList);
+        System.out.println(numberList); // Output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    }
+}
+```
+
+#### Пример 8: Создание обобщённого интерфейса
+
+```java
+public interface Container<T> {
+    void add(T item);
+    T get(int index);
+}
+
+public class StringContainer implements Container<String> {
+    private List<String> items = new ArrayList<>();
+
+    @Override
+    public void add(String item) {
+        items.add(item);
+    }
+
+    @Override
+    public String get(int index) {
+        return items.get(index);
+    }
+
+    public static void main(String[] args) {
+        StringContainer container = new StringContainer();
+        container.add("Java");
+        container.add("Generics");
+
+        System.out.println(container.get(0)); // Output: Java
+        System.out.println(container.get(1)); // Output: Generics
+    }
+}
+```
+
 ## 103. Коллекции и Generics в Java. Как использование Generics повысило типобезопасность коллекций, таких как ArrayList, HashMap и HashSet? Примеры создания и обработки коллекций с обобщениями.
 ## 104. Параметризованные методы. Понятие параметризованных методов в Java. Как они позволяют работать с любыми типами данных? Примеры реализации методов с обобщенными параметрами и их вызова.
 ## 105. Generics в Java. Типовые ограничения в Generics. Как задать ограничения на параметры типов с помощью ключевых слов extends и super? Примеры их использования для обеспечения гибкости и безопасности обобщений.
