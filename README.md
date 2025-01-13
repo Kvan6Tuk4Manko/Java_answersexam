@@ -6609,13 +6609,1163 @@ public class LowerBoundedWildcardExample {
 ```
 
 ## 104. Параметризованные методы. Понятие параметризованных методов в Java. Как они позволяют работать с любыми типами данных? Примеры реализации методов с обобщенными параметрами и их вызова.
+Параметризованные методы, также известные как обобщенные (generic) методы, позволяют работать с любыми типами данных, сохраняя при этом типобезопасность. Это особенно полезно, когда требуется создать методы, которые могут оперировать различными типами данных без необходимости их явного указания при каждом вызове.
+
+### Понятие параметризованных методов
+
+Параметризованный метод в Java использует обобщения для определения типа в качестве параметра. Этот тип может быть указан при вызове метода или автоматически определен компилятором на основе переданных аргументов. 
+
+Общий синтаксис параметризованного метода выглядит следующим образом:
+
+```java
+public <T> void methodName(T param) {
+    // Тело метода
+}
+```
+
+Здесь `<T>` — это обобщенный параметр типа, который можно использовать внутри метода. Обычно буква `T` используется для обозначения "Type", но можно использовать любое другое имя.
+
+### Пример реализации параметризованного метода
+
+Рассмотрим пример метода, который принимает массив любого типа и выводит его элементы на консоль:
+
+```java
+public class GenericMethodExample {
+
+    // Параметризованный метод для вывода массива
+    public static <T> void printArray(T[] array) {
+        for (T element : array) {
+            System.out.print(element + " ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        // Пример использования метода с массивом Integer
+        Integer[] intArray = {1, 2, 3, 4, 5};
+        printArray(intArray);
+
+        // Пример использования метода с массивом String
+        String[] stringArray = {"Hello", "World"};
+        printArray(stringArray);
+    }
+}
+```
+
+### Вызов параметризованного метода
+
+В данном примере метод `printArray` может принимать массивы различных типов: `Integer`, `String` и т.д. Компилятор автоматически определяет тип `T` на основе переданного массива.
+
+Если нужно явно указать тип, можно сделать это следующим образом:
+
+```java
+GenericMethodExample.<Integer>printArray(intArray); // Явное указание типа
+```
+
+Однако в большинстве случаев явное указание типа не требуется, так как компилятор способен инферировать тип из контекста.
+
+### Дополнительные примеры
+
+#### Метод, возвращающий первый элемент массива
+
+```java
+public class GenericMethodExample {
+
+    // Параметризованный метод для получения первого элемента массива
+    public static <T> T getFirstElement(T[] array) {
+        if (array == null || array.length == 0) {
+            return null;
+        }
+        return array[0];
+    }
+
+    public static void main(String[] args) {
+        Integer[] intArray = {1, 2, 3, 4, 5};
+        String[] stringArray = {"Hello", "World"};
+
+        Integer firstInt = getFirstElement(intArray);
+        String firstString = getFirstElement(stringArray);
+
+        System.out.println("Первый элемент массива Integer: " + firstInt);
+        System.out.println("Первый элемент массива String: " + firstString);
+    }
+}
+```
 ## 105. Generics в Java. Типовые ограничения в Generics. Как задать ограничения на параметры типов с помощью ключевых слов extends и super? Примеры их использования для обеспечения гибкости и безопасности обобщений.
+### Generics в Java
+
+Generics (обобщения) в Java позволяют создавать классы, интерфейсы и методы, которые могут работать с любыми типами данных, сохраняя при этом типобезопасность. Они помогают избежать приведения типов и уменьшают вероятность возникновения ошибок времени выполнения.
+
+### Типовые ограничения в Generics
+
+Чтобы сделать обобщенные классы и методы более гибкими и безопасными, можно использовать типовые ограничения. В Java это делается с помощью ключевых слов `extends` и `super`.
+
+#### Ключевое слово `extends`
+
+Ключевое слово `extends` используется для указания верхнего ограничения на тип параметра. Это означает, что тип должен быть либо самим указанным классом или интерфейсом, либо его подклассом.
+
+Синтаксис:
+```java
+<T extends UpperBound>
+```
+
+Пример использования:
+
+```java
+public class Box<T extends Number> {
+    private T value;
+
+    public Box(T value) {
+        this.value = value;
+    }
+
+    public T getValue() {
+        return value;
+    }
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    public double getDoubleValue() {
+        return value.doubleValue();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Box<Integer> intBox = new Box<>(10);
+        System.out.println("Integer Value: " + intBox.getValue());
+        System.out.println("Double Value: " + intBox.getDoubleValue());
+
+        // Box<String> stringBox = new Box<>("Hello"); // Ошибка компиляции, так как String не является подклассом Number
+    }
+}
+```
+
+В этом примере класс `Box` может принимать только типы, являющиеся подклассами `Number`, такие как `Integer`, `Double`, `Float` и т.д.
+
+#### Ключевое слово `super`
+
+Ключевое слово `super` используется для указания нижнего ограничения на тип параметра. Это означает, что тип должен быть либо самим указанным классом или интерфейсом, либо его суперклассом.
+
+Синтаксис:
+```java
+<T super LowerBound>
+```
+
+Однако в Java ключевое слово `super` чаще всего используется в контексте границ типа для методов, а не классов. Пример использования `super` в методах:
+
+```java
+public class Util {
+
+    // Метод с нижней границей типа
+    public static <T> void addToList(List<? super Integer> list, Integer element) {
+        list.add(element);
+    }
+
+    public static void main(String[] args) {
+        List<Object> objectList = new ArrayList<>();
+        List<Integer> integerList = new ArrayList<>();
+
+        addToList(objectList, 1); // Работает, так как Object - суперкласс Integer
+        addToList(integerList, 2); // Работает, так как Integer - это Integer
+
+        // addToList(new ArrayList<String>(), 3); // Ошибка компиляции, так как String не является суперклассом Integer
+    }
+}
+```
+
+### Примеры использования `extends` и `super` для обеспечения гибкости и безопасности обобщений
+
+#### Пример с `extends`
+
+Предположим, у нас есть иерархия классов:
+
+```java
+class Animal {}
+class Dog extends Animal {}
+class Cat extends Animal {}
+```
+
+Мы хотим создать метод, который будет работать только с типами, производными от `Animal`.
+
+```java
+public class AnimalUtil {
+
+    public static <T extends Animal> void printType(T animal) {
+        System.out.println("This is an animal of type: " + animal.getClass().getSimpleName());
+    }
+
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        Cat cat = new Cat();
+
+        printType(dog); // Работает
+        printType(cat); // Работает
+
+        // printType("String"); // Ошибка компиляции, так как String не является подклассом Animal
+    }
+}
+```
+
+#### Пример с `super`
+
+Допустим, у нас есть иерархия классов:
+
+```java
+class Fruit {}
+class Apple extends Fruit {}
+class RedApple extends Apple {}
+```
+
+Мы хотим создать метод, который будет работать с коллекциями, содержащими объекты типа `Apple` или его суперклассы.
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class FruitUtil {
+
+    public static void addApple(List<? super Apple> list, Apple apple) {
+        list.add(apple);
+    }
+
+    public static void main(String[] args) {
+        List<Fruit> fruitList = new ArrayList<>();
+        List<Apple> appleList = new ArrayList<>();
+        List<RedApple> redAppleList = new ArrayList<>();
+
+        addApple(fruitList, new Apple()); // Работает, так как Fruit - суперкласс Apple
+        addApple(appleList, new Apple()); // Работает, так как Apple - это Apple
+
+        // addApple(redAppleList, new Apple()); // Ошибка компиляции, так как RedApple - подкласс Apple
+    }
+}
+```
 ## 106. Обобщенные интерфейсы. Использование Generics для создания универсальных интерфейсов. Примеры реализации обобщенных интерфейсов и их применения в реальных задачах.
+### Обобщенные интерфейсы
+
+Обобщенные интерфейсы в Java позволяют создавать универсальные интерфейсы, которые могут работать с различными типами данных. Это делает код более гибким и повторно используемым, сохраняя при этом типобезопасность.
+
+### Использование Generics для создания универсальных интерфейсов
+
+Для создания обобщенного интерфейса используется синтаксис, аналогичный обобщенным классам и методам. Обобщенный параметр типа указывается в угловых скобках после имени интерфейса.
+
+Синтаксис:
+```java
+public interface MyInterface<T> {
+    // Методы интерфейса
+}
+```
+
+### Примеры реализации обобщенных интерфейсов
+
+#### Пример 1: Интерфейс для работы с хранилищем данных
+
+Предположим, у нас есть интерфейс для работы с хранилищем данных, который должен быть способен сохранять и извлекать объекты любого типа.
+
+```java
+public interface Repository<T> {
+    void save(T entity);
+    T findById(int id);
+    void delete(T entity);
+}
+```
+
+Теперь мы можем реализовать этот интерфейс для различных типов данных.
+
+##### Реализация для типа `User`
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+class User {
+    private int id;
+    private String name;
+
+    public User(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "User{id=" + id + ", name='" + name + "'}";
+    }
+}
+
+class UserRepository implements Repository<User> {
+    private Map<Integer, User> storage = new HashMap<>();
+
+    @Override
+    public void save(User user) {
+        storage.put(user.getId(), user);
+    }
+
+    @Override
+    public User findById(int id) {
+        return storage.get(id);
+    }
+
+    @Override
+    public void delete(User user) {
+        storage.remove(user.getId());
+    }
+}
+```
+
+##### Применение в реальной задаче
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        UserRepository userRepository = new UserRepository();
+
+        User user1 = new User(1, "Alice");
+        User user2 = new User(2, "Bob");
+
+        userRepository.save(user1);
+        userRepository.save(user2);
+
+        System.out.println("Find by ID 1: " + userRepository.findById(1));
+        System.out.println("Find by ID 2: " + userRepository.findById(2));
+
+        userRepository.delete(user1);
+        System.out.println("After deleting user1: " + userRepository.findById(1)); // null
+    }
+}
+```
+
+#### Пример 2: Интерфейс для сравнения объектов
+
+Другой пример — интерфейс для сравнения объектов. Мы можем создать обобщенный интерфейс для сравнения двух объектов одного типа.
+
+```java
+public interface Comparator<T> {
+    int compare(T o1, T o2);
+}
+```
+
+##### Реализация для типа `Integer`
+
+```java
+class IntegerComparator implements Comparator<Integer> {
+    @Override
+    public int compare(Integer o1, Integer o2) {
+        return Integer.compare(o1, o2);
+    }
+}
+```
+
+##### Применение в реальной задаче
+
+```java
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        Integer[] numbers = {5, 3, 8, 1, 9};
+
+        Arrays.sort(numbers, new IntegerComparator());
+
+        System.out.println(Arrays.toString(numbers)); // [1, 3, 5, 8, 9]
+    }
+}
+```
+
+### Примеры применения обобщенных интерфейсов в реальных задачах
+
+1. **Работа с коллекциями**: В стандартной библиотеке Java многие интерфейсы коллекций, такие как `List`, `Set`, `Map`, являются обобщенными. Они позволяют работать с коллекциями различных типов данных.
+
+2. **DAO (Data Access Object)**: В архитектуре программного обеспечения часто используются DAO-слои для абстракции доступа к данным. Обобщенные интерфейсы позволяют создавать универсальные DAO-интерфейсы для различных сущностей.
+
+3. **Сервисные слои**: В многокомпонентных системах сервисные слои могут использовать обобщенные интерфейсы для предоставления универсальных операций над различными типами данных.
+
+4. **Фабрики**: Фабричные паттерны часто используют обобщенные интерфейсы для создания объектов различных типов.
 ## 107. Generics в Java. Подстановочные знаки (Wildcards). Как использовать ?, <? extends T> и <? super T> для работы с коллекциями? Примеры их применения.
+### Подстановочные знаки (Wildcards) в Generics
+
+Подстановочные знаки, или wildcards, в Java позволяют создавать более гибкие и универсальные обобщенные типы. Они используются для указания неопределенного типа, что особенно полезно при работе с коллекциями. В Java существуют три основных типа подстановочных знаков:
+
+1. **`?` (неограниченный wildcard)**
+2. **`<? extends T>` (верхняя граница)**
+3. **`<? super T>` (нижняя граница)**
+
+### Как использовать подстановочные знаки
+
+#### 1. Неограниченный wildcard (`?`)
+
+Неограниченный wildcard используется, когда конкретный тип не важен. Он позволяет работать с объектами любого типа.
+
+Пример:
+```java
+import java.util.List;
+
+public class WildcardExample {
+
+    public static void printList(List<?> list) {
+        for (Object elem : list) {
+            System.out.print(elem + " ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        List<Integer> intList = List.of(1, 2, 3);
+        List<String> stringList = List.of("A", "B", "C");
+
+        printList(intList);   // Вывод: 1 2 3
+        printList(stringList); // Вывод: A B C
+    }
+}
+```
+
+**Ограничение**: Нельзя добавлять элементы в коллекцию с неограниченным wildcard, так как компилятор не знает точный тип элементов.
+
+#### 2. Верхняя граница (`<? extends T>`)
+
+Верхняя граница используется, когда необходимо указать, что тип должен быть либо самим `T`, либо его подклассом. Это позволяет читать элементы из коллекции, но не добавлять новые элементы.
+
+Пример:
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+class Animal {}
+class Dog extends Animal {}
+class Cat extends Animal {}
+
+public class UpperBoundWildcardExample {
+
+    public static double sumOfWeights(List<? extends Animal> animals) {
+        double sum = 0.0;
+        for (Animal animal : animals) {
+            sum += getWeight(animal);
+        }
+        return sum;
+    }
+
+    private static double getWeight(Animal animal) {
+        // Предположим, что у нас есть метод для получения веса животного
+        return 10.0; // Просто для примера
+    }
+
+    public static void main(String[] args) {
+        List<Dog> dogs = new ArrayList<>();
+        dogs.add(new Dog());
+        dogs.add(new Dog());
+
+        List<Cat> cats = new ArrayList<>();
+        cats.add(new Cat());
+        cats.add(new Cat());
+
+        System.out.println("Sum of weights of dogs: " + sumOfWeights(dogs));
+        System.out.println("Sum of weights of cats: " + sumOfWeights(cats));
+    }
+}
+```
+
+**Ограничение**: Нельзя добавлять элементы в коллекцию с верхней границей, так как компилятор не может гарантировать, что добавляемый элемент будет подходящего типа.
+
+#### 3. Нижняя граница (`<? super T>`)
+
+Нижняя граница используется, когда необходимо указать, что тип должен быть либо самим `T`, либо его суперклассом. Это позволяет добавлять элементы в коллекцию, но не гарантирует возможность чтения элементов с точным типом.
+
+Пример:
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+class Animal {}
+class Dog extends Animal {}
+
+public class LowerBoundWildcardExample {
+
+    public static void addDogs(List<? super Dog> dogs) {
+        dogs.add(new Dog());
+        dogs.add(new Dog());
+    }
+
+    public static void main(String[] args) {
+        List<Animal> animals = new ArrayList<>();
+        addDogs(animals);
+
+        List<Dog> dogList = new ArrayList<>();
+        addDogs(dogList);
+
+        System.out.println("Number of dogs in animals list: " + animals.size());
+        System.out.println("Number of dogs in dogList: " + dogList.size());
+    }
+}
+```
+
+**Ограничение**: При чтении элементов из коллекции с нижней границей, они будут возвращаться как `Object`, поэтому потребуется приведение типов.
+
+### Примеры применения подстановочных знаков
+
+#### Пример 1: Работа с коллекциями различных типов
+
+Предположим, у нас есть несколько классов, представляющих различные типы данных, и мы хотим создать метод для вывода элементов коллекции.
+
+```java
+import java.util.List;
+
+class Fruit {}
+class Apple extends Fruit {}
+class Orange extends Fruit {}
+
+public class CollectionUtil {
+
+    public static void printCollection(List<? extends Fruit> fruits) {
+        for (Fruit fruit : fruits) {
+            System.out.println(fruit);
+        }
+    }
+
+    public static void main(String[] args) {
+        List<Apple> apples = List.of(new Apple(), new Apple());
+        List<Orange> oranges = List.of(new Orange(), new Orange());
+
+        printCollection(apples);
+        printCollection(oranges);
+    }
+}
+```
+
+#### Пример 2: Добавление элементов в коллекцию
+
+Допустим, у нас есть интерфейс `Addable` и его реализации для различных типов данных. Мы хотим создать метод для добавления элементов в коллекцию.
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+interface Addable<T> {
+    void add(T element);
+}
+
+class IntegerAdder implements Addable<Integer> {
+    private final List<Integer> list = new ArrayList<>();
+
+    @Override
+    public void add(Integer element) {
+        list.add(element);
+    }
+
+    public void print() {
+        System.out.println(list);
+    }
+}
+
+class StringAdder implements Addable<String> {
+    private final List<String> list = new ArrayList<>();
+
+    @Override
+    public void add(String element) {
+        list.add(element);
+    }
+
+    public void print() {
+        System.out.println(list);
+    }
+}
+
+public class AddElementExample {
+
+    public static <T> void addElements(Addable<? super T> addable, T... elements) {
+        for (T element : elements) {
+            addable.add(element);
+        }
+    }
+
+    public static void main(String[] args) {
+        IntegerAdder integerAdder = new IntegerAdder();
+        addElements(integerAdder, 1, 2, 3);
+        integerAdder.print(); // Вывод: [1, 2, 3]
+
+        StringAdder stringAdder = new StringAdder();
+        addElements(stringAdder, "A", "B", "C");
+        stringAdder.print(); // Вывод: [A, B, C]
+    }
+}
+```
 ## 108. Generics в Java. Стирание типов (Type Erasure). Как информация о Generics удаляется во время компиляции? Примеры преобразования Generics в сырой тип.
+### Стирание типов (Type Erasure) в Generics
+
+Стирание типов (type erasure) — это процесс, который происходит во время компиляции в Java для обеспечения обратной совместимости с кодом, написанным до появления обобщений. В результате этого процесса все параметры типа удаляются, и код преобразуется таким образом, чтобы работать с объектами базового типа (`Object`), если не указаны конкретные ограничения.
+
+### Как информация о Generics удаляется во время компиляции?
+
+Во время компиляции:
+
+1. **Параметры типа заменяются на их верхние границы**: Если параметр типа имеет верхнюю границу (например, `T extends Number`), то он заменяется на эту границу. Если нет верхней границы, параметр типа заменяется на `Object`.
+
+2. **Методы и поля приводятся к общему виду**: Методы и поля, которые используют параметры типа, преобразуются так, чтобы они работали с типом, полученным после стирания.
+
+3. **Проверка типобезопасности**: Компилятор добавляет проверки типобезопасности в байт-код, чтобы предотвратить ошибки времени выполнения, связанные с неправильными типами.
+
+### Примеры преобразования Generics в сырой тип
+
+#### Пример 1: Обобщенный класс
+
+Рассмотрим простой обобщенный класс:
+
+```java
+public class Box<T> {
+    private T value;
+
+    public Box(T value) {
+        this.value = value;
+    }
+
+    public T getValue() {
+        return value;
+    }
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+}
+```
+
+После компиляции этот класс будет преобразован в следующий эквивалентный код:
+
+```java
+public class Box {
+    private Object value;
+
+    public Box(Object value) {
+        this.value = value;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
+    }
+}
+```
+
+#### Пример 2: Обобщенный метод
+
+Рассмотрим обобщенный метод:
+
+```java
+public class Util {
+    public static <T> void printArray(T[] array) {
+        for (T element : array) {
+            System.out.print(element + " ");
+        }
+        System.out.println();
+    }
+}
+```
+
+После компиляции этот метод будет преобразован в следующий эквивалентный код:
+
+```java
+public class Util {
+    public static void printArray(Object[] array) {
+        for (Object element : array) {
+            System.out.print(element + " ");
+        }
+        System.out.println();
+    }
+}
+```
+
+#### Пример 3: Верхняя граница
+
+Рассмотрим обобщенный класс с верхней границей:
+
+```java
+public class NumberBox<T extends Number> {
+    private T value;
+
+    public NumberBox(T value) {
+        this.value = value;
+    }
+
+    public T getValue() {
+        return value;
+    }
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    public double getDoubleValue() {
+        return value.doubleValue();
+    }
+}
+```
+
+После компиляции этот класс будет преобразован в следующий эквивалентный код:
+
+```java
+public class NumberBox {
+    private Number value;
+
+    public NumberBox(Number value) {
+        this.value = value;
+    }
+
+    public Number getValue() {
+        return value;
+    }
+
+    public void setValue(Number value) {
+        this.value = value;
+    }
+
+    public double getDoubleValue() {
+        return value.doubleValue();
+    }
+}
+```
+
+### Преобразование в сырой тип
+
+Когда вы используете обобщенные типы без указания параметров типа, компилятор автоматически преобразует их в сырой тип (raw type). Это может привести к потере типобезопасности.
+
+Пример использования сырого типа:
+
+```java
+Box rawBox = new Box("Hello");
+Box<String> stringBox = new Box<>("Hello");
+
+// Преобразование в сырой тип
+rawBox = stringBox; // Предупреждение компилятора
+
+// Доступ к элементам сырого типа
+String value = (String) rawBox.getValue(); // Приведение типов необходимо
+```
+
+В этом примере использование сырого типа `Box` приводит к необходимости приведения типов и потере типобезопасности.
+
+### Практические последствия стирания типов
+
+1. **Нельзя создавать новые экземпляры обобщенного типа**: Из-за стирания типов нельзя использовать параметры типа для создания новых экземпляров.
+   ```java
+   public <T> void createInstance() {
+       T instance = new T(); // Ошибка компиляции
+   }
+   ```
+
+2. **Нельзя использовать оператор instanceof с параметрами типа**: 
+   ```java
+   public <T> boolean checkType(Object obj) {
+       return obj instanceof T; // Ошибка компиляции
+   }
+   ```
+
+3. **Ограничения на статические члены**: Статические переменные и методы не могут использовать параметры типа класса.
+   ```java
+   public class MyClass<T> {
+       private static T staticVar; // Ошибка компиляции
+       
+       public static <T> void staticMethod(T param) { /* ... */ } // ОК
+   }
+   ```
 ## 109. Коллекции в Java. Понятие коллекций как структур данных для хранения объектов. Основные интерфейсы и классы в Java Collections Framework (JCF). Примеры использования коллекций для хранения и обработки данных.
+### Коллекции в Java
+
+Коллекции в Java — это структуры данных, предназначенные для хранения и управления множеством объектов. Они предоставляют удобные методы для добавления, удаления, поиска и обработки элементов. Java Collections Framework (JCF) представляет собой набор интерфейсов и классов, которые обеспечивают эффективное управление коллекциями данных.
+
+### Основные интерфейсы и классы в JCF
+
+Java Collections Framework включает несколько ключевых интерфейсов и их реализаций:
+
+#### 1. **Основные интерфейсы**
+
+- **Collection**: Корневой интерфейс для всех коллекций.
+- **List**: Интерфейс для упорядоченных коллекций, допускающих дубликаты.
+- **Set**: Интерфейс для коллекций, не допускающих дубликаты.
+- **Queue**: Интерфейс для очередей, обычно используется для FIFO (First-In-First-Out).
+- **Deque**: Интерфейс для двусторонних очередей (допускает вставку и удаление с обоих концов).
+- **Map**: Интерфейс для ассоциативных массивов, где каждый элемент представлен парой "ключ-значение".
+
+#### 2. **Основные реализации**
+
+- **ArrayList**: Реализация интерфейса `List`, основанная на массиве.
+- **LinkedList**: Реализация интерфейса `List` и `Deque`, основанная на двусвязном списке.
+- **HashSet**: Реализация интерфейса `Set`, основанная на хеш-таблице.
+- **TreeSet**: Реализация интерфейса `Set`, основанная на красно-черном дереве.
+- **HashMap**: Реализация интерфейса `Map`, основанная на хеш-таблице.
+- **TreeMap**: Реализация интерфейса `Map`, основанная на красно-черном дереве.
+- **PriorityQueue**: Реализация интерфейса `Queue`, представляющая собой приоритетную очередь.
+
+### Примеры использования коллекций
+
+#### Пример 1: Использование `ArrayList`
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class ArrayListExample {
+    public static void main(String[] args) {
+        List<String> names = new ArrayList<>();
+        
+        // Добавление элементов
+        names.add("Alice");
+        names.add("Bob");
+        names.add("Charlie");
+
+        // Чтение элементов
+        System.out.println("Names: " + names);
+
+        // Обновление элемента
+        names.set(1, "Dave");
+        System.out.println("Updated Names: " + names);
+
+        // Удаление элемента
+        names.remove(2);
+        System.out.println("After removal: " + names);
+
+        // Поиск элемента
+        if (names.contains("Alice")) {
+            System.out.println("Alice is in the list.");
+        }
+
+        // Получение размера списка
+        System.out.println("Size of the list: " + names.size());
+    }
+}
+```
+
+#### Пример 2: Использование `HashSet`
+
+```java
+import java.util.HashSet;
+import java.util.Set;
+
+public class HashSetExample {
+    public static void main(String[] args) {
+        Set<String> uniqueNames = new HashSet<>();
+
+        // Добавление элементов
+        uniqueNames.add("Alice");
+        uniqueNames.add("Bob");
+        uniqueNames.add("Alice"); // Дубликат будет проигнорирован
+
+        // Чтение элементов
+        System.out.println("Unique names: " + uniqueNames);
+
+        // Удаление элемента
+        uniqueNames.remove("Bob");
+        System.out.println("After removal: " + uniqueNames);
+
+        // Проверка наличия элемента
+        if (!uniqueNames.contains("Bob")) {
+            System.out.println("Bob is not in the set.");
+        }
+
+        // Получение размера множества
+        System.out.println("Size of the set: " + uniqueNames.size());
+    }
+}
+```
+
+#### Пример 3: Использование `HashMap`
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class HashMapExample {
+    public static void main(String[] args) {
+        Map<String, Integer> phoneBook = new HashMap<>();
+
+        // Добавление элементов
+        phoneBook.put("Alice", 123456789);
+        phoneBook.put("Bob", 987654321);
+        phoneBook.put("Charlie", 555666777);
+
+        // Чтение элементов
+        System.out.println("Phone book: " + phoneBook);
+
+        // Обновление элемента
+        phoneBook.put("Alice", 111222333);
+        System.out.println("Updated phone book: " + phoneBook);
+
+        // Удаление элемента
+        phoneBook.remove("Charlie");
+        System.out.println("After removal: " + phoneBook);
+
+        // Поиск элемента
+        if (phoneBook.containsKey("Bob")) {
+            System.out.println("Bob's phone number: " + phoneBook.get("Bob"));
+        }
+
+        // Получение размера карты
+        System.out.println("Size of the map: " + phoneBook.size());
+    }
+}
+```
+
+#### Пример 4: Использование `PriorityQueue`
+
+```java
+import java.util.PriorityQueue;
+import java.util.Queue;
+
+public class PriorityQueueExample {
+    public static void main(String[] args) {
+        Queue<Integer> priorityQueue = new PriorityQueue<>();
+
+        // Добавление элементов
+        priorityQueue.add(10);
+        priorityQueue.add(5);
+        priorityQueue.add(20);
+        priorityQueue.add(15);
+
+        // Чтение и удаление элементов в порядке приоритета
+        while (!priorityQueue.isEmpty()) {
+            System.out.println("Removed element: " + priorityQueue.poll());
+        }
+    }
+}
+```
 ## 110. Иерархия коллекций. Структура иерархии коллекций в Java. Основные интерфейсы (Collection, List, Set, Map) и их ключевые особенности. Примеры реализации различных типов коллекций.
+### Иерархия коллекций в Java
+
+Java Collections Framework (JCF) представляет собой иерархическую структуру, состоящую из интерфейсов и их реализаций. Эта иерархия позволяет разработчикам выбирать наиболее подходящие структуры данных для конкретных задач.
+
+### Основные интерфейсы и их ключевые особенности
+
+#### 1. **Collection**
+
+**`Collection`** — это корневой интерфейс для всех коллекций в JCF. Он определяет базовые операции, такие как добавление, удаление и проверка наличия элементов.
+
+Основные методы:
+- `add(E e)`
+- `remove(Object o)`
+- `contains(Object o)`
+- `size()`
+- `isEmpty()`
+- `iterator()`
+
+#### 2. **List**
+
+**`List`** расширяет интерфейс `Collection` и представляет упорядоченные коллекции, допускающие дубликаты. Элементы в списке могут быть доступны по индексу.
+
+Основные методы:
+- `get(int index)`
+- `set(int index, E element)`
+- `add(int index, E element)`
+- `remove(int index)`
+- `indexOf(Object o)`
+- `subList(int fromIndex, int toIndex)`
+
+##### Реализации:
+- **ArrayList**: Базируется на массиве, обеспечивает быстрый произвольный доступ к элементам.
+- **LinkedList**: Базируется на двусвязном списке, эффективен для вставки и удаления элементов в начале или конце списка.
+
+Пример использования `ArrayList`:
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class ArrayListExample {
+    public static void main(String[] args) {
+        List<String> names = new ArrayList<>();
+        names.add("Alice");
+        names.add("Bob");
+        names.add("Charlie");
+
+        System.out.println("Names: " + names);
+        System.out.println("Element at index 1: " + names.get(1));
+    }
+}
+```
+
+#### 3. **Set**
+
+**`Set`** также расширяет интерфейс `Collection`, но не допускает дубликаты. Элементы в множестве не имеют порядка (если не используется специальная реализация).
+
+Основные методы:
+- `add(E e)`
+- `remove(Object o)`
+- `contains(Object o)`
+- `size()`
+
+##### Реализации:
+- **HashSet**: Базируется на хеш-таблице, обеспечивает быстрое добавление и поиск элементов.
+- **TreeSet**: Базируется на красно-черном дереве, элементы хранятся в отсортированном порядке.
+
+Пример использования `HashSet`:
+
+```java
+import java.util.HashSet;
+import java.util.Set;
+
+public class HashSetExample {
+    public static void main(String[] args) {
+        Set<String> uniqueNames = new HashSet<>();
+        uniqueNames.add("Alice");
+        uniqueNames.add("Bob");
+        uniqueNames.add("Alice"); // Дубликат будет проигнорирован
+
+        System.out.println("Unique names: " + uniqueNames);
+    }
+}
+```
+
+Пример использования `TreeSet`:
+
+```java
+import java.util.Set;
+import java.util.TreeSet;
+
+public class TreeSetExample {
+    public static void main(String[] args) {
+        Set<Integer> numbers = new TreeSet<>();
+        numbers.add(5);
+        numbers.add(3);
+        numbers.add(8);
+        numbers.add(1);
+
+        System.out.println("Sorted numbers: " + numbers);
+    }
+}
+```
+
+#### 4. **Queue**
+
+**`Queue`** представляет собой очередь, обычно используемую для FIFO (First-In-First-Out) обработки элементов.
+
+Основные методы:
+- `offer(E e)`
+- `poll()`
+- `peek()`
+- `element()`
+
+##### Реализации:
+- **PriorityQueue**: Представляет приоритетную очередь, где элементы обрабатываются в порядке приоритета.
+
+Пример использования `PriorityQueue`:
+
+```java
+import java.util.PriorityQueue;
+import java.util.Queue;
+
+public class PriorityQueueExample {
+    public static void main(String[] args) {
+        Queue<Integer> priorityQueue = new PriorityQueue<>();
+        priorityQueue.offer(10);
+        priorityQueue.offer(5);
+        priorityQueue.offer(20);
+
+        while (!priorityQueue.isEmpty()) {
+            System.out.println("Removed element: " + priorityQueue.poll());
+        }
+    }
+}
+```
+
+#### 5. **Deque**
+
+**`Deque`** (Double Ended Queue) представляет собой двустороннюю очередь, позволяющую добавлять и удалять элементы с обоих концов.
+
+Основные методы:
+- `addFirst(E e)`
+- `addLast(E e)`
+- `removeFirst()`
+- `removeLast()`
+- `getFirst()`
+- `getLast()`
+
+##### Реализации:
+- **LinkedList**: Может использоваться как двусторонняя очередь.
+
+Пример использования `LinkedList` как `Deque`:
+
+```java
+import java.util.Deque;
+import java.util.LinkedList;
+
+public class DequeExample {
+    public static void main(String[] args) {
+        Deque<Integer> deque = new LinkedList<>();
+        deque.addFirst(10);
+        deque.addLast(20);
+        deque.addFirst(5);
+
+        System.out.println("Deque: " + deque);
+        System.out.println("Remove first: " + deque.removeFirst());
+        System.out.println("Remove last: " + deque.removeLast());
+    }
+}
+```
+
+#### 6. **Map**
+
+**`Map`** представляет собой ассоциативный массив, где каждый элемент представлен парой "ключ-значение". Ключи должны быть уникальными.
+
+Основные методы:
+- `put(K key, V value)`
+- `get(Object key)`
+- `remove(Object key)`
+- `containsKey(Object key)`
+- `keySet()`
+- `values()`
+- `entrySet()`
+
+##### Реализации:
+- **HashMap**: Базируется на хеш-таблице, обеспечивает быстрое добавление и поиск элементов.
+- **TreeMap**: Базируется на красно-черном дереве, ключи хранятся в отсортированном порядке.
+
+Пример использования `HashMap`:
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class HashMapExample {
+    public static void main(String[] args) {
+        Map<String, Integer> phoneBook = new HashMap<>();
+        phoneBook.put("Alice", 123456789);
+        phoneBook.put("Bob", 987654321);
+
+        System.out.println("Phone book: " + phoneBook);
+        System.out.println("Bob's phone number: " + phoneBook.get("Bob"));
+    }
+}
+```
+
+Пример использования `TreeMap`:
+
+```java
+import java.util.Map;
+import java.util.TreeMap;
+
+public class TreeMapExample {
+    public static void main(String[] args) {
+        Map<String, Integer> sortedPhoneBook = new TreeMap<>();
+        sortedPhoneBook.put("Alice", 123456789);
+        sortedPhoneBook.put("Bob", 987654321);
+        sortedPhoneBook.put("Charlie", 555666777);
+
+        System.out.println("Sorted phone book: " + sortedPhoneBook);
+    }
+}
+```
 ## 111. LinkedList в Java. Особенности класса LinkedList как реализации интерфейса List. Преимущества использования. 
+
 ## 112. Коллекции в Java. Понятие коллекций как структур данных для хранения объектов. Основные цели использования коллекций. Роль Iterable в Java Collections Framework. 
 ## 113. Коллекции в Java. Реализации List - ArrayList. Особенности функционирования ArrayList. Пример использования ArrayList.
 ## 114. Коллекции в Java. Создание Generic Collection в Java. Преимущства данного подхода. Примеры. 
