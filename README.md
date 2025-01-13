@@ -4783,6 +4783,191 @@ public class ListSelectionEventExample {
 ```
 
 ## 97. Обработка событий в Java. Как источник события, слушатель и обработчик взаимодействуют в событийной модели? Примеры добавления слушателей событий. Модель делегирования событий. Как работает модель делегирования событий? 
+### Обработка событий в Java
+
+**Обработка событий** в Java Swing основана на **событийной модели**, которая использует принцип делегирования событий. В этой модели взаимодействие между компонентами происходит через события, которые генерируются источником и обрабатываются слушателями (обработчиками событий).
+
+### Модель делегирования событий
+
+**Модель делегирования событий** означает, что когда происходит какое-либо действие (например, нажатие кнопки), источник события (например, `JButton`) создает объект события (например, `ActionEvent`) и передает его зарегистрированным слушателям событий (например, `ActionListener`). Слушатель затем вызывает метод обратного вызова для обработки этого события.
+
+### Как источник события, слушатель и обработчик взаимодействуют в событийной модели
+
+1. **Источник события (Event Source)**: Компонент, который генерирует событие. Например, `JButton`, `JTextField`, `JList`.
+2. **Событие (Event)**: Объект, представляющий конкретное действие или изменение состояния. Например, `ActionEvent`, `MouseEvent`, `KeyEvent`.
+3. **Слушатель события (Event Listener)**: Интерфейс, реализуемый классом для обработки определенного типа событий. Например, `ActionListener`, `MouseListener`, `KeyListener`.
+4. **Обработчик события (Event Handler)**: Метод обратного вызова, определенный в классе, реализующем интерфейс слушателя, который вызывается при возникновении события.
+
+### Примеры добавления слушателей событий
+
+#### Пример 1: Обработка события нажатия кнопки
+
+```java
+import javax.swing.*;
+import java.awt.event.*;
+
+public class ButtonClickExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Button Click Example");
+        frame.setSize(300, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем кнопку
+        JButton button = new JButton("Click Me");
+
+        // Регистрируем слушатель события нажатия кнопки
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Button ClickedTextBox!");
+            }
+        });
+
+        // Добавляем кнопку в окно
+        frame.add(button);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 2: Обработка события изменения текста в текстовом поле
+
+```java
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+public class TextFieldChangeEventExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Text Field Change Event Example");
+        frame.setSize(300, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем текстовое поле
+        JTextField textField = new JTextField(20);
+
+        // Регистрируем слушатель события изменения текста
+        textField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateLabel();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateLabel();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateLabel();
+            }
+
+            private void updateLabel() {
+                String text = textField.getText();
+                System.out.println("Text field content: " + text);
+            }
+        });
+
+        // Добавляем текстовое поле в окно
+        frame.add(textField);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 3: Обработка события выбора элемента из списка
+
+```java
+import javax.swing.*;
+import java.awt.event.*;
+
+public class ListSelectionEventExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("List Selection Event Example");
+        frame.setSize(300, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем список
+        JList<String> list = new JList<>(new String[]{"Item 1", "Item 2", "Item 3"});
+
+        // Регистрируем слушатель события выбора элемента из списка
+        list.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    String selectedItem = list.getSelectedValue();
+                    JOptionPane.showMessageDialog(frame, "Selected item: " + selectedItem);
+                }
+            }
+        });
+
+        // Добавляем список в окно
+        frame.add(new JScrollPane(list));
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+### Как работает модель делегирования событий
+
+1. **Генерация события**: Когда пользователь выполняет действие (например, нажимает кнопку), источник события (например, `JButton`) создает объект события (например, `ActionEvent`).
+2. **Регистрация слушателей**: Источник события может иметь несколько зарегистрированных слушателей событий. Каждый слушатель реализует соответствующий интерфейс (например, `ActionListener`).
+3. **Передача события слушателям**: Источник события вызывает методы всех зарегистрированных слушателей, передавая им объект события.
+4. **Обработка события**: Каждый слушатель вызывает свой метод обратного вызова для обработки события (например, `actionPerformed(ActionEvent e)` для `ActionListener`).
+
+### Подробнее о процессе
+
+1. **Создание источника события**: Создается компонент, который будет генерировать события. Например, `JButton button = new JButton("Click Me");`.
+2. **Регистрация слушателя**: К источнику события добавляется слушатель. Например, `button.addActionListener(new ActionListener() {...});`.
+3. **Генерация события**: Когда пользователь выполняет действие, источник события создает объект события. Например, при нажатии кнопки создается `ActionEvent`.
+4. **Передача события слушателям**: Источник события вызывает методы всех зарегистрированных слушателей, передавая им объект события.
+5. **Обработка события**: Каждый слушатель вызывает свой метод обратного вызова для обработки события. Например, в случае `ActionListener` это метод `actionPerformed(ActionEvent e)`.
+
+### Пример с использованием лямбда-выражений
+
+Лямбда-выражения могут упростить код для регистрации слушателей событий:
+
+#### Пример 4: Обработка события нажатия кнопки с использованием лямбда-выражений
+
+```java
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class LambdaButtonExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Lambda Button Example");
+        frame.setSize(300, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем кнопку
+        JButton button = new JButton("Click Me");
+
+        // Регистрируем слушатель события нажатия кнопки с использованием лямбда-выражения
+        button.addActionListener((ActionEvent e) -> {
+            JOptionPane.showMessageDialog(frame, "Button Clicked!");
+        });
+
+        // Добавляем кнопку в окно
+        frame.add(button);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
 ## 98. Обработка событий при реализации GUI в JAVA. Классы событий пакета java.awt.event. Какие классы событий предоставляет пакет java.awt.event? Примеры обработки событий мыши и клавиатуры.
 ## 99. Обработка событий мыши в JAVA. Как использовать интерфейсы MouseListener и MouseMotionListener для обработки событий мыши? Примеры обработки нажатий и перемещений.
 ## 100. Обработка событий клавиатуры в JAVA. Как обрабатывать события клавиатуры с использованием KeyListener? Примеры регистрации слушателей клавиатурных событий.
