@@ -4640,6 +4640,148 @@ public class TitledBorderExample {
 ```
 
 ## 96. GUI и сбытийная модель в Java. Что такое событийная модель, и как она используется для взаимодействия компонентов через события? Основные элементы событийной модели.
+### GUI и событийная модель в Java
+
+**Событийная модель (Event-Driven Model)** — это подход к разработке графических пользовательских интерфейсов (GUI), при котором взаимодействие между компонентами происходит через события. В этом контексте события представляют собой действия пользователя или изменения состояния, такие как нажатие кнопки, перемещение мыши или изменение текста в текстовом поле.
+
+### Что такое событийная модель?
+
+**Событийная модель** в Java Swing позволяет компонентам реагировать на действия пользователя или изменения состояния. Когда происходит какое-либо действие (например, нажатие кнопки), генерируется событие, которое затем обрабатывается соответствующим обработчиком событий.
+
+### Основные элементы событийной модели
+
+1. **Источник событий (Event Source)**: Компонент, который генерирует событие. Например, кнопка (`JButton`), текстовое поле (`JTextField`) или метка (`JLabel`).
+2. **События (Events)**: Объекты, представляющие конкретное действие или изменение состояния. Например, `ActionEvent` для нажатия кнопки, `MouseEvent` для действий с мышью.
+3. **Обработчики событий (Event Listeners)**: Интерфейсы, реализуемые для обработки определенных типов событий. Например, `ActionListener` для обработки событий нажатия кнопок.
+4. **Методы обратного вызова (Callback Methods)**: Методы, которые вызываются при возникновении события. Эти методы определяются в классах, реализующих интерфейсы обработчиков событий.
+
+### Как используется событийная модель для взаимодействия компонентов через события
+
+Для того чтобы компонент мог реагировать на события, необходимо выполнить следующие шаги:
+
+1. **Определение источника событий**: Создайте компонент, который будет генерировать события.
+2. **Регистрация обработчика событий**: Привяжите обработчик событий к источнику событий.
+3. **Обработка событий**: Реализуйте методы обратного вызова для обработки событий.
+
+### Примеры использования событийной модели
+
+#### Пример 1: Обработка события нажатия кнопки
+
+```java
+import javax.swing.*;
+import java.awt.event.*;
+
+public class ButtonClickExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Button Click Example");
+        frame.setSize(300, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем кнопку
+        JButton button = new JButton("Click Me");
+
+        // Регистрируем обработчик события нажатия кнопки
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Button Clicked!");
+            }
+        });
+
+        // Добавляем кнопку в окно
+        frame.add(button);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 2: Обработка события изменения текста в текстовом поле
+
+```java
+import javax.swing.*;
+import java.awt.event.*;
+
+public class TextFieldChangeEventExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Text Field Change Event Example");
+        frame.setSize(300, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем текстовое поле
+        JTextField textField = new JTextField(20);
+
+        // Регистрируем обработчик события изменения текста
+        textField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateLabel();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateLabel();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateLabel();
+            }
+
+            private void updateLabel() {
+                String text = textField.getText();
+                System.out.println("Text field content: " + text);
+            }
+        });
+
+        // Добавляем текстовое поле в окно
+        frame.add(textField);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 3: Обработка события выбора элемента из списка
+
+```java
+import javax.swing.*;
+import java.awt.event.*;
+
+public class ListSelectionEventExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("List Selection Event Example");
+        frame.setSize(300, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем список
+        JList<String> list = new JList<>(new String[]{"Item 1", "Item 2", "Item 3"});
+
+        // Регистрируем обработчик события выбора элемента из списка
+        list.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    String selectedItem = list.getSelectedValue();
+                    JOptionPane.showMessageDialog(frame, "Selected item: " + selectedItem);
+                }
+            }
+        });
+
+        // Добавляем список в окно
+        frame.add(new JScrollPane(list));
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
 ## 97. Обработка событий в Java. Как источник события, слушатель и обработчик взаимодействуют в событийной модели? Примеры добавления слушателей событий. Модель делегирования событий. Как работает модель делегирования событий? 
 ## 98. Обработка событий при реализации GUI в JAVA. Классы событий пакета java.awt.event. Какие классы событий предоставляет пакет java.awt.event? Примеры обработки событий мыши и клавиатуры.
 ## 99. Обработка событий мыши в JAVA. Как использовать интерфейсы MouseListener и MouseMotionListener для обработки событий мыши? Примеры обработки нажатий и перемещений.
