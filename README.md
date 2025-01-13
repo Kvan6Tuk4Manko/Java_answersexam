@@ -1945,9 +1945,501 @@ public class Main {
    ```
 
 Перечисления позволяют сделать код более читаемым, безопасным и поддерживаемым, особенно когда речь идет о фиксированных наборах значений.
+
 ## 81. GUI в Java. Что такое GUI (графический пользовательский интерфейс)? Основные пакеты для работы с GUI в Java: AWT и Swing.
+### Что такое GUI (графический пользовательский интерфейс)?
+
+**GUI (Graphical User Interface)** — это тип пользовательского интерфейса, который позволяет пользователям взаимодействовать с электронными устройствами через графические элементы, такие как окна, кнопки, списки, текстовые поля и другие визуальные компоненты. В отличие от командной строки, где пользователи должны вводить текстовые команды, GUI предоставляет более интуитивный и удобный способ взаимодействия.
+
+### Основные пакеты для работы с GUI в Java
+
+В Java существует несколько основных пакетов для создания графических пользовательских интерфейсов:
+
+1. **AWT (Abstract Window Toolkit)**
+2. **Swing**
+3. **JavaFX** (хотя он не упомянут в вашем вопросе, но также является важным фреймворком для GUI)
+
+#### AWT (Abstract Window Toolkit)
+
+**AWT** — это один из первых наборов инструментов для создания графических интерфейсов в Java. Он предоставляет базовый набор компонентов и контейнеров для создания окон, кнопок, списков и других элементов интерфейса.
+
+**Основные характеристики AWT:**
+
+- **Нативные компоненты**: Компоненты AWT основаны на нативных компонентах операционной системы, что делает их зависимыми от платформы.
+- **Ограниченный функционал**: AWT предоставляет ограниченный набор компонентов и возможностей по сравнению с другими фреймворками.
+- **Простота**: AWT проще в использовании, особенно для простых приложений.
+
+**Пример использования AWT:**
+
+```java
+import java.awt.*;
+import java.awt.event.*;
+
+public class AWTExample {
+    public static void main(String[] args) {
+        Frame frame = new Frame("AWT Example");
+        Button button = new Button("Click Me");
+
+        button.setBounds(50, 50, 80, 30);
+
+        frame.add(button);
+        frame.setSize(300, 300);
+        frame.setLayout(null);
+        frame.setVisible(true);
+
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Button Clicked!");
+            }
+        });
+
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                System.exit(0);
+            }
+        });
+    }
+}
+```
+
+#### Swing
+
+**Swing** — это более современный и мощный набор инструментов для создания графических интерфейсов в Java. Он основан на AWT, но предоставляет гораздо больше компонентов и возможностей для кастомизации.
+
+**Основные характеристики Swing:**
+
+- **Платформонезависимость**: Компоненты Swing реализованы полностью на Java и не зависят от нативных компонентов операционной системы.
+- **Богатый набор компонентов**: Swing предлагает широкий спектр компонентов, таких как `JButton`, `JLabel`, `JTextField`, `JTable`, `JTree` и многие другие.
+- **Кастомизация**: Компоненты Swing легко кастомизировать с помощью различных методов и классов.
+- **Поддержка плагинов и тем**: Swing поддерживает различные темы и стили для интерфейса.
+
+**Пример использования Swing:**
+
+```java
+import javax.swing.*;
+import java.awt.event.*;
+
+public class SwingExample {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Swing Example");
+        JButton button = new JButton("Click Me");
+
+        button.setBounds(50, 50, 80, 30);
+
+        frame.add(button);
+        frame.setSize(300, 300);
+        frame.setLayout(null);
+        frame.setVisible(true);
+
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Button Clicked!");
+            }
+        });
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+}
+```
+
+### Сравнение AWT и Swing
+
+| Характеристика | AWT | Swing |
+|----------------|-----|-------|
+| Нативные компоненты | Да | Нет |
+| Платформонезависимость | Нет | Да |
+| Богатый набор компонентов | Нет | Да |
+| Кастомизация | Ограниченная | Широкая |
+| Простота использования | Более простой | Более сложный |
+
 ## 82. GUI в Java. Структура GUI в JAVA при реализации через Swing и AWT. Компоненты GUI. Какие элементы составляют графический интерфейс? Примеры кнопок, текстовых полей и других компонентов.
+### Структура GUI в Java при реализации через Swing и AWT
+
+Графический пользовательский интерфейс (GUI) в Java, будь то через Swing или AWT, состоит из различных компонентов и контейнеров. Эти компоненты и контейнеры организованы в иерархическую структуру, которая определяет их взаимосвязи и расположение на экране.
+
+### Основные элементы GUI
+
+1. **Компоненты (Components)**: Это базовые элементы интерфейса, такие как кнопки, текстовые поля, метки и т.д.
+2. **Контейнеры (Containers)**: Это элементы, которые могут содержать другие компоненты и контейнеры. Примеры контейнеров — окна, панели и диалоговые окна.
+3. **Макеты (Layouts)**: Макеты определяют, как компоненты располагаются внутри контейнеров.
+
+### Компоненты GUI
+
+#### 1. **Кнопки (Buttons)**
+- **AWT**: `Button`
+- **Swing**: `JButton`
+
+#### 2. **Текстовые поля (Text Fields)**
+- **AWT**: `TextField`
+- **Swing**: `JTextField`
+
+#### 3. **Метки (Labels)**
+- **AWT**: `Label`
+- **Swing**: `JLabel`
+
+#### 4. **Поля для многострочного текста (Text Areas)**
+- **AWT**: `TextArea`
+- **Swing**: `JTextArea`
+
+#### 5. **Чекбоксы (Checkboxes)**
+- **AWT**: `Checkbox`
+- **Swing**: `JCheckBox`
+
+#### 6. **Радиокнопки (Radio Buttons)**
+- **AWT**: `Checkbox` с режимом выбора `CheckboxGroup`
+- **Swing**: `JRadioButton` с использованием `ButtonGroup`
+
+#### 7. **Списки (Lists)**
+- **AWT**: `List`
+- **Swing**: `JList`
+
+#### 8. **Панели (Panels)**
+- **AWT**: `Panel`
+- **Swing**: `JPanel`
+
+### Примеры использования компонентов
+
+#### Пример с AWT
+
+```java
+import java.awt.*;
+import java.awt.event.*;
+
+public class AWTExample {
+    public static void main(String[] args) {
+        Frame frame = new Frame("AWT Example");
+        Button button = new Button("Click Me");
+        TextField textField = new TextField();
+        Label label = new Label("Enter your name:");
+
+        // Установка расположения компонентов
+        label.setBounds(50, 50, 100, 30);
+        textField.setBounds(160, 50, 100, 30);
+        button.setBounds(100, 100, 80, 30);
+
+        // Добавление компонентов в контейнер
+        frame.add(label);
+        frame.add(textField);
+        frame.add(button);
+
+        // Настройка окна
+        frame.setSize(300, 300);
+        frame.setLayout(null); // Использование абсолютного макета
+        frame.setVisible(true);
+
+        // Обработчик события для кнопки
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Button Clicked! Name: " + textField.getText());
+            }
+        });
+
+        // Закрытие окна
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                System.exit(0);
+            }
+        });
+    }
+}
+```
+
+#### Пример с Swing
+
+```java
+import javax.swing.*;
+import java.awt.event.*;
+
+public class SwingExample {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Swing Example");
+        JButton button = new JButton("Click Me");
+        JTextField textField = new JTextField();
+        JLabel label = new JLabel("Enter your name:");
+
+        // Установка расположения компонентов
+        label.setBounds(50, 50, 100, 30);
+        textField.setBounds(160, 50, 100, 30);
+        button.setBounds(100, 100, 80, 30);
+
+        // Добавление компонентов в контейнер
+        frame.add(label);
+        frame.add(textField);
+        frame.add(button);
+
+        // Настройка окна
+        frame.setSize(300, 300);
+        frame.setLayout(null); // Использование абсолютного макета
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+
+        // Обработчик события для кнопки
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Button Clicked! Name: " + textField.getText());
+            }
+        });
+    }
+}
+```
+
+### Макеты (Layout Managers)
+
+Вместо использования абсолютного макета (`null`), можно использовать различные менеджеры макетов, которые автоматически управляют расположением компонентов:
+
+- **FlowLayout**: Компоненты располагаются последовательно слева направо и сверху вниз.
+- **BorderLayout**: Разделение контейнера на пять областей: север, юг, запад, восток и центр.
+- **GridLayout**: Разделение контейнера на сетку фиксированного размера.
+- **BoxLayout**: Расположение компонентов вертикально или горизонтально.
+
+Пример использования `FlowLayout`:
+
+```java
+import javax.swing.*;
+import java.awt.*;
+
+public class FlowLayoutExample {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("FlowLayout Example");
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+
+        JButton button1 = new JButton("Button 1");
+        JButton button2 = new JButton("Button 2");
+        JButton button3 = new JButton("Button 3");
+
+        panel.add(button1);
+        panel.add(button2);
+        panel.add(button3);
+
+        frame.add(panel);
+        frame.setSize(300, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+}
+```
 ## 83. AWT (Abstract Window Toolkit). Что такое AWT и как он используется для создания GUI? Примеры простых интерфейсов с использованием AWT.
+### Что такое AWT (Abstract Window Toolkit)?
+
+**AWT (Abstract Window Toolkit)** — это набор инструментов для создания графических пользовательских интерфейсов (GUI) в Java. Он предоставляет базовые компоненты и контейнеры, такие как окна, кнопки, метки и текстовые поля, а также механизмы для обработки событий.
+
+Основные характеристики AWT:
+
+1. **Нативные компоненты**: Компоненты AWT основаны на нативных компонентах операционной системы, что делает их зависимыми от платформы.
+2. **Простота**: AWT проще в использовании по сравнению с более современными фреймворками, такими как Swing или JavaFX.
+3. **Ограниченный функционал**: AWT предоставляет ограниченный набор компонентов и возможностей по сравнению с другими GUI-фреймворками.
+
+### Как AWT используется для создания GUI
+
+Для создания GUI с использованием AWT необходимо выполнить следующие шаги:
+
+1. **Создание контейнера**: Основным контейнером является `Frame`, который представляет собой окно.
+2. **Добавление компонентов**: В контейнер добавляются различные компоненты, такие как кнопки (`Button`), метки (`Label`), текстовые поля (`TextField`) и другие.
+3. **Установка макета**: Макет определяет, как компоненты будут располагаться внутри контейнера. Можно использовать различные менеджеры макетов, такие как `FlowLayout`, `BorderLayout`, `GridLayout`.
+4. **Обработка событий**: Для взаимодействия с пользователем необходимо добавить обработчики событий к компонентам.
+
+### Примеры простых интерфейсов с использованием AWT
+
+#### Пример 1: Простое окно с кнопкой
+
+```java
+import java.awt.*;
+import java.awt.event.*;
+
+public class SimpleAWTExample {
+    public static void main(String[] args) {
+        // Создаем основное окно (контейнер)
+        Frame frame = new Frame("Simple AWT Example");
+
+        // Создаем кнопку
+        Button button = new Button("Click Me");
+
+        // Добавляем кнопку в контейнер
+        frame.add(button);
+
+        // Устанавливаем размер окна
+        frame.setSize(300, 200);
+
+        // Устанавливаем макет (по умолчанию FlowLayout)
+        frame.setLayout(new FlowLayout());
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+
+        // Обработчик события для кнопки
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Button Clicked!");
+            }
+        });
+
+        // Закрытие окна при нажатии на "X"
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                System.exit(0);
+            }
+        });
+    }
+}
+```
+
+#### Пример 2: Окно с меткой и текстовым полем
+
+```java
+import java.awt.*;
+import java.awt.event.*;
+
+public class LabelTextFieldAWTExample {
+    public static void main(String[] args) {
+        // Создаем основное окно (контейнер)
+        Frame frame = new Frame("Label and TextField Example");
+
+        // Создаем метку и текстовое поле
+        Label label = new Label("Enter your name:");
+        TextField textField = new TextField(20);
+
+        // Создаем кнопку
+        Button button = new Button("Submit");
+
+        // Добавляем компоненты в контейнер
+        frame.add(label);
+        frame.add(textField);
+        frame.add(button);
+
+        // Устанавливаем размер окна
+        frame.setSize(300, 200);
+
+        // Устанавливаем макет (по умолчанию FlowLayout)
+        frame.setLayout(new FlowLayout());
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+
+        // Обработчик события для кнопки
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String name = textField.getText();
+                System.out.println("Name entered: " + name);
+            }
+        });
+
+        // Закрытие окна при нажатии на "X"
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                System.exit(0);
+            }
+        });
+    }
+}
+```
+
+#### Пример 3: Окно с списком (List)
+
+```java
+import java.awt.*;
+import java.awt.event.*;
+
+public class ListAWTExample {
+    public static void main(String[] args) {
+        // Создаем основное окно (контейнер)
+        Frame frame = new Frame("List Example");
+
+        // Создаем список
+        List list = new List();
+        list.add("Item 1");
+        list.add("Item 2");
+        list.add("Item 3");
+        list.add("Item 4");
+
+        // Создаем кнопку
+        Button button = new Button("Select");
+
+        // Добавляем компоненты в контейнер
+        frame.add(list);
+        frame.add(button);
+
+        // Устанавливаем размер окна
+        frame.setSize(300, 200);
+
+        // Устанавливаем макет (по умолчанию FlowLayout)
+        frame.setLayout(new FlowLayout());
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+
+        // Обработчик события для кнопки
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String selected = list.getSelectedItem();
+                if (selected != null) {
+                    System.out.println("Selected item: " + selected);
+                } else {
+                    System.out.println("No item selected.");
+                }
+            }
+        });
+
+        // Закрытие окна при нажатии на "X"
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                System.exit(0);
+            }
+        });
+    }
+}
+```
+
+### Макеты (Layout Managers)
+
+Как было показано в примерах выше, можно использовать различные макеты для управления расположением компонентов в контейнере:
+
+- **FlowLayout**: Компоненты располагаются последовательно слева направо и сверху вниз.
+- **BorderLayout**: Разделение контейнера на пять областей: север, юг, запад, восток и центр.
+- **GridLayout**: Разделение контейнера на сетку фиксированного размера.
+
+Пример использования `BorderLayout`:
+
+```java
+import java.awt.*;
+import java.awt.event.*;
+
+public class BorderLayoutAWTExample {
+    public static void main(String[] args) {
+        // Создаем основное окно (контейнер)
+        Frame frame = new Frame("BorderLayout Example");
+
+        // Создаем кнопки
+        Button northButton = new Button("North");
+        Button southButton = new Button("South");
+        Button eastButton = new Button("East");
+        Button westButton = new Button("West");
+        Button centerButton = new Button("Center");
+
+        // Добавляем кнопки в контейнер с указанием области BorderLayout
+        frame.add(northButton, BorderLayout.NORTH);
+        frame.add(southButton, BorderLayout.SOUTH);
+        frame.add(eastButton, BorderLayout.EAST);
+        frame.add(westButton, BorderLayout.WEST);
+        frame.add(centerButton, BorderLayout.CENTER);
+
+        // Устанавливаем размер окна
+        frame.setSize(400, 300);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+
+        // Закрытие окна при нажатии на "X"
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                System.exit(0);
+            }
+        });
+    }
+}
+```
+
 ## 84. Swing в Java. Как Swing расширяет возможности AWT? Примеры создания интерфейсов с использованием Swing. Паттерн MVC в Swing. Как Swing реализует модель MVC (Model-View-Controller)? Примеры разделения логики, представления и управления в интерфейсе.
 ## 85. Структура GUI в Java. Основные компоненты GUI в Swing: контейнеры (JFrame, JPanel, JDialog), компоненты (JButton, JLabel, JTextField) и менеджеры компоновки. 
 ## 86. Класс JFrame. Что такое окно JFrame, и как использовать его для создания графического интерфейса? Примеры добавления элементов через метод getContentPane().
