@@ -4469,8 +4469,176 @@ public class ComplexBoxLayoutExample {
 }
 ```
 
-
 ## 95. Границы в Swing. Как использовать границы для улучшения внешнего вида интерфейса? Примеры применения границ.
+### Границы в Swing
+
+**Границы (Borders)** в Swing используются для улучшения внешнего вида и структурирования компонентов. Они могут добавлять визуальные разделители, подсветку, тени и другие декоративные элементы, что делает интерфейс более понятным и привлекательным для пользователей.
+
+Swing предоставляет класс `BorderFactory` для создания различных типов границ. В этом классе есть методы для создания стандартных границ, таких как линии, пустые границы, выделенные границы и другие.
+
+### Как использовать границы для улучшения внешнего вида интерфейса
+
+1. **Добавление визуальных разделителей**: Границы могут использоваться для отделения одного компонента от другого.
+2. **Подсветка важных элементов**: Выделенные границы помогают акцентировать внимание на важных элементах интерфейса.
+3. **Создание пространства вокруг компонентов**: Пустые границы позволяют создать отступы вокруг компонентов, что улучшает читаемость интерфейса.
+
+### Примеры применения границ
+
+#### Пример 1: Добавление линейной границы
+
+```java
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+
+public class LineBorderExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Line Border Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем кнопку и добавляем ей линейную границу
+        JButton button = new JButton("Click Me");
+        Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 2); // Черная линия шириной 2 пикселя
+        button.setBorder(lineBorder);
+
+        // Добавляем кнопку в окно
+        frame.add(button);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 2: Добавление пустой границы
+
+```java
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+
+public class EmptyBorderExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Empty Border Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем текстовое поле и добавляем ему пустую границу
+        JTextField textField = new JTextField();
+        Border emptyBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10); // Отступы по 10 пикселей с каждой стороны
+        textField.setBorder(emptyBorder);
+
+        // Добавляем текстовое поле в окно
+        frame.add(textField);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 3: Добавление выделенной границы
+
+```java
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+
+public class EtchedBorderExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Etched Border Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и добавляем ей выделенную границу
+        JPanel panel = new JPanel();
+        Border etchedBorder = BorderFactory.createEtchedBorder(); // Стандартная выделенная граница
+        panel.setBorder(etchedBorder);
+
+        // Добавляем метку на панель
+        JLabel label = new JLabel("This is a panel with an etched border", SwingConstants.CENTER);
+        panel.add(label);
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 4: Комбинирование нескольких границ
+
+```java
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+
+public class CompoundBorderExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Compound Border Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и добавляем ей комбинированную границу
+        JPanel panel = new JPanel();
+        Border outerBorder = BorderFactory.createLineBorder(Color.BLUE, 2); // Синяя линейная граница
+        Border innerBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10); // Пустая граница для отступов
+        Border compoundBorder = BorderFactory.createCompoundBorder(outerBorder, innerBorder);
+        panel.setBorder(compoundBorder);
+
+        // Добавляем метку на панель
+        JLabel label = new JLabel("This is a panel with a compound border", SwingConstants.CENTER);
+        panel.add(label);
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 5: Использование заголовочной границы
+
+```java
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+
+public class TitledBorderExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Titled Border Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель и добавляем ей заголовочную границу
+        JPanel panel = new JPanel();
+        Border titledBorder = BorderFactory.createTitledBorder("Panel Title"); // Заголовок "Panel Title"
+        panel.setBorder(titledBorder);
+
+        // Добавляем метки на панель
+        panel.add(new JLabel("Label 1"));
+        panel.add(new JLabel("Label 2"));
+        panel.add(new JLabel("Label 3"));
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
 ## 96. GUI и сбытийная модель в Java. Что такое событийная модель, и как она используется для взаимодействия компонентов через события? Основные элементы событийной модели.
 ## 97. Обработка событий в Java. Как источник события, слушатель и обработчик взаимодействуют в событийной модели? Примеры добавления слушателей событий. Модель делегирования событий. Как работает модель делегирования событий? 
 ## 98. Обработка событий при реализации GUI в JAVA. Классы событий пакета java.awt.event. Какие классы событий предоставляет пакет java.awt.event? Примеры обработки событий мыши и клавиатуры.
