@@ -5477,6 +5477,292 @@ public class CombinedMouseEventsExample {
 ```
 
 ## 100. Обработка событий клавиатуры в JAVA. Как обрабатывать события клавиатуры с использованием KeyListener? Примеры регистрации слушателей клавиатурных событий.
+### Обработка событий клавиатуры в Java
+
+Обработка событий клавиатуры в Java Swing позволяет создавать интерактивные и отзывчивые графические интерфейсы, реагирующие на нажатия клавиш. Для этого используется интерфейс `KeyListener`, который предоставляет методы для обработки различных событий клавиатуры.
+
+### Как обрабатывать события клавиатуры с использованием KeyListener
+
+Интерфейс `KeyListener` содержит три основных метода:
+
+1. **keyPressed(KeyEvent e)**: Вызывается при нажатии клавиши.
+2. **keyReleased(KeyEvent e)**: Вызывается при отпускании клавиши.
+3. **keyTyped(KeyEvent e)**: Вызывается при вводе символа (например, при нажатии буквенной или цифровой клавиши).
+
+Для удобства можно использовать класс `KeyAdapter`, который предоставляет пустую реализацию всех методов `KeyListener`. Это позволяет реализовать только те методы, которые вам нужны.
+
+### Примеры регистрации слушателей клавиатурных событий
+
+#### Пример 1: Обработка событий клавиатуры с использованием KeyListener
+
+```java
+import javax.swing.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+public class KeyListenerExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Key Listener Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем текстовое поле для обработки событий клавиатуры
+        JTextField textField = new JTextField();
+
+        // Регистрируем слушатель событий клавиатуры
+        textField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                System.out.println("Key pressed: " + KeyEvent.getKeyText(e.getKeyCode()));
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                System.out.println("Key released: " + KeyEvent.getKeyText(e.getKeyCode()));
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                System.out.println("Key typed: " + e.getKeyChar());
+            }
+        });
+
+        // Устанавливаем фокус на текстовом поле для обработки событий клавиатуры
+        textField.setFocusable(true);
+        textField.requestFocusInWindow();
+
+        // Добавляем текстовое поле в окно
+        frame.add(textField);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 2: Обработка событий клавиатуры в JPanel
+
+```java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+public class PanelKeyListenerExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Panel Key Listener Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель для обработки событий клавиатуры
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawString("Press any key", 100, 100);
+            }
+        };
+
+        // Регистрируем слушатель событий клавиатуры
+        panel.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                System.out.println("Key pressed: " + KeyEvent.getKeyText(e.getKeyCode()));
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                System.out.println("Key released: " + KeyEvent.getKeyText(e.getKeyCode()));
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                System.out.println("Key typed: " + e.getKeyChar());
+            }
+        });
+
+        // Устанавливаем фокус на панели для обработки событий клавиатуры
+        panel.setFocusable(true);
+        panel.requestFocusInWindow();
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+#### Пример 3: Использование KeyListener для управления компонентами
+
+В этом примере мы будем использовать события клавиатуры для перемещения кнопки по панели.
+
+```java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+public class MoveButtonWithKeysExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Move Button with Keys Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель для размещения кнопки
+        JPanel panel = new JPanel() {
+            private int buttonX = 50;
+            private int buttonY = 50;
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(Color.BLUE);
+                g.fillRect(buttonX, buttonY, 100, 50); // Нарисуем прямоугольник вместо кнопки
+            }
+        };
+
+        // Регистрируем слушатель событий клавиатуры
+        panel.addKeyListener(new KeyAdapter() {
+            private int buttonX = 50;
+            private int buttonY = 50;
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_UP:
+                        buttonY -= 10;
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        buttonY += 10;
+                        break;
+                    case KeyEvent.VK_LEFT:
+                        buttonX -= 10;
+                        break;
+                    case KeyEvent.VK_RIGHT:
+                        buttonX += 10;
+                        break;
+                }
+                panel.repaint(); // Перерисовываем панель для обновления положения кнопки
+            }
+        });
+
+        // Устанавливаем фокус на панели для обработки событий клавиатуры
+        panel.setFocusable(true);
+        panel.requestFocusInWindow();
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
+### Подробнее о методах интерфейса KeyListener
+
+#### Методы KeyListener
+
+- **keyPressed(KeyEvent e)**: Вызывается при нажатии клавиши.
+  - `e.getKeyCode()`: Возвращает код нажатой клавиши.
+  - `KeyEvent.getKeyText(int keyCode)`: Преобразует код клавиши в строковое представление.
+
+- **keyReleased(KeyEvent e)**: Вызывается при отпускании клавиши.
+  - `e.getKeyCode()`: Возвращает код отпущенной клавиши.
+
+- **keyTyped(KeyEvent e)**: Вызывается при вводе символа (например, при нажатии буквенной или цифровой клавиши).
+  - `e.getKeyChar()`: Возвращает символ, соответствующий нажатой клавише.
+
+### Пример с использованием KeyBindings
+
+Альтернативным способом обработки событий клавиатуры является использование `Key Bindings`, что позволяет более гибко управлять обработкой клавиш без необходимости устанавливать фокус на конкретный компонент.
+
+#### Пример 4: Использование Key Bindings для обработки клавиш
+
+```java
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class KeyBindingsExample {
+    public static void main(String[] args) {
+        // Создаем экземпляр JFrame
+        JFrame frame = new JFrame("Key Bindings Example");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Создаем панель для размещения кнопки
+        JPanel panel = new JPanel();
+        JButton button = new JButton("Move Me");
+        panel.add(button);
+
+        // Устанавливаем Key Bindings для кнопки
+        int condition = JComponent.WHEN_IN_FOCUSED_WINDOW; // Срабатывает, когда окно активно
+        InputMap inputMap = button.getInputMap(condition);
+        ActionMap actionMap = button.getActionMap();
+
+        // Обработка нажатия стрелок для перемещения кнопки
+        inputMap.put(KeyStroke.getKeyStroke("UP"), "moveUp");
+        inputMap.put(KeyStroke.getKeyStroke("DOWN"), "moveDown");
+        inputMap.put(KeyStroke.getKeyStroke("LEFT"), "moveLeft");
+        inputMap.put(KeyStroke.getKeyStroke("RIGHT"), "moveRight");
+
+        Action moveUpAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int y = button.getY() - 10;
+                if (y >= 0) {
+                    button.setLocation(button.getX(), y);
+                }
+            }
+        };
+        Action moveDownAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int y = button.getY() + 10;
+                if (y <= panel.getHeight() - button.getHeight()) {
+                    button.setLocation(button.getX(), y);
+                }
+            }
+        };
+        Action moveLeftAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int x = button.getX() - 10;
+                if (x >= 0) {
+                    button.setLocation(x, button.getY());
+                }
+            }
+        };
+        Action moveRightAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int x = button.getX() + 10;
+                if (x <= panel.getWidth() - button.getWidth()) {
+                    button.setLocation(x, button.getY());
+                }
+            }
+        };
+
+        actionMap.put("moveUp", moveUpAction);
+        actionMap.put("moveDown", moveDownAction);
+        actionMap.put("moveLeft", moveLeftAction);
+        actionMap.put("moveRight", moveRightAction);
+
+        // Добавляем панель в окно
+        frame.add(panel);
+
+        // Делаем окно видимым
+        frame.setVisible(true);
+    }
+}
+```
+
 ## 101. Обобщённое программирование в Java. Понятие обобщённого программирования и его роль в упрощении создания алгоритмов для работы с различными типами данных. История разваития в JAVA. Примеры проектирования универсальных структур данных и алгоритмов.
 ## 102. Generics в Java. Реализация обобщенного программирования через Generics. Основные синтаксические конструкции: параметры типов, обобщенные классы и методы. Примеры работы с параметризованными классами и методами. Примущества и недостатки Generics.
 ## 103. Коллекции и Generics в Java. Как использование Generics повысило типобезопасность коллекций, таких как ArrayList, HashMap и HashSet? Примеры создания и обработки коллекций с обобщениями.
