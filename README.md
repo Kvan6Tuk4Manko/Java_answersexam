@@ -724,23 +724,142 @@ P.S. у составителей нет идей для вопросов, поэ
 Модификатор `static` предоставляет мощные возможности для создания общих ресурсов и утилитарных методов в Java. Статические поля и методы позволяют работать с данными и функциональностью, которые являются общими для всех экземпляров класса. Правильное использование `static` помогает повысить эффективность кода и сделать его более понятным и удобным для поддержки.
 
 ## 30. Ключевое слово this. Использование this для доступа к полям и методам объекта, вызова других конструкторов и передачи текущего объекта. Примеры решения конфликтов имен с помощью this.
-this представляет собой ссылку на текущий 
-объект, для которого вызван метод или 
-выполняется блок кода.
+Ключевое слово `this` в Java используется для ссылки на текущий объект, который вызывает метод или конструктор. Оно играет важную роль в различных аспектах программирования на Java, таких как доступ к полям и методам объекта, вызов других конструкторов и передача текущего объекта в другие методы или конструкторы. Рассмотрим подробнее использование `this` и примеры его применения.
 
-Использование this в Java:
-- Доступ к полям объекта
-- Вызов методов объекта
-- Вызов конструктора с помощью this()
-- Передача текущего объекта в качестве 
-аргумента
----
-Доступ к полям объекта
-- Когда имена параметров метода или 
-конструктора совпадают с именами 
-полей объекта, this помогает отличить 
-поле объекта от локальной 
-переменной
+### Использование `this` для доступа к полям и методам объекта
+
+#### Доступ к полям
+
+Когда в классе есть локальные переменные или параметры методов с теми же именами, что и поля класса, можно использовать ключевое слово `this`, чтобы явно указать, что речь идет о поле класса, а не о локальной переменной.
+
+```java
+public class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name; // this.name — поле класса, name — параметр метода
+        this.age = age;   // this.age — поле класса, age — параметр метода
+    }
+
+    public void printInfo() {
+        System.out.println("Name: " + this.name + ", Age: " + this.age);
+    }
+}
+```
+
+#### Доступ к методам
+
+Ключевое слово `this` также может использоваться для вызова методов текущего объекта.
+
+```java
+public class Calculator {
+    public void add(int a, int b) {
+        System.out.println("Sum: " + (a + b));
+    }
+
+    public void performAddition(int a, int b) {
+        this.add(a, b); // Вызов метода add текущего объекта
+    }
+}
+```
+
+### Вызов других конструкторов
+
+Ключевое слово `this` может быть использовано для вызова другого конструктора в рамках одного класса. Это позволяет избежать дублирования кода и упрощает создание конструкторов с различными параметрами.
+
+```java
+public class Person {
+    private String name;
+    private int age;
+
+    // Конструктор по умолчанию
+    public Person() {
+        this("Unknown", 0); // Вызов другого конструктора
+    }
+
+    // Конструктор с параметрами
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public void printInfo() {
+        System.out.println("Name: " + this.name + ", Age: " + this.age);
+    }
+}
+
+// Пример использования
+Person person1 = new Person(); // Использует конструктор по умолчанию
+person1.printInfo(); // Выведет Name: Unknown, Age: 0
+
+Person person2 = new Person("Alice", 30);
+person2.printInfo(); // Выведет Name: Alice, Age: 30
+```
+
+### Передача текущего объекта
+
+Ключевое слово `this` можно использовать для передачи текущего объекта в качестве параметра в другой метод или конструктор.
+
+```java
+public class Box {
+    private double width;
+    private double height;
+    private double depth;
+
+    public Box(double width, double height, double depth) {
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
+    }
+
+    public void increase(Box box) {
+        this.width += box.width;
+        this.height += box.height;
+        this.depth += box.depth;
+    }
+
+    public static void main(String[] args) {
+        Box box1 = new Box(10, 20, 30);
+        Box box2 = new Box(5, 10, 15);
+
+        box1.increase(box2); // Передаем box2 в метод increase
+        System.out.println("Box1 dimensions after increase: " + box1.width + "x" + box1.height + "x" + box1.depth);
+    }
+}
+```
+
+### Разрешение конфликтов имен
+
+Ключевое слово `this` особенно полезно при разрешении конфликтов имен между локальными переменными и полями класса.
+
+```java
+public class Student {
+    private String name;
+    private int rollNumber;
+
+    public Student(String name, int rollNumber) {
+        this.name = name; // Поле класса
+        this.rollNumber = rollNumber; // Поле класса
+    }
+
+    public void setName(String name) {
+        this.name = name; // Поле класса
+    }
+
+    public void setRollNumber(int rollNumber) {
+        this.rollNumber = rollNumber; // Поле класса
+    }
+
+    public void printDetails() {
+        System.out.println("Name: " + this.name + ", Roll Number: " + this.rollNumber);
+    }
+}
+
+// Пример использования
+Student student = new Student("John Doe", 123);
+student.printDetails(); // Выведет Name: John Doe, Roll Number: 123
+```
 
 ## 31. Концепция неизменяемых классов. Что делает класс неизменяемым? Использование final для предотвращения изменений. Примеры создания неизменяемых объектов.
 - Концепция неизменяемых классов (immutable classes) в программировании подразумевает, что после создания объекта его состояние (значения полей) не может быть изменено. Это означает, что любые изменения, которые должны быть применены к объекту, требуют создания нового экземпляра этого объекта с обновлёнными значениями.
